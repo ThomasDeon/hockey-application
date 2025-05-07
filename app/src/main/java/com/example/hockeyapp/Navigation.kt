@@ -8,19 +8,28 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.hockeyapp.ui.HomeScreen
+import com.example.hockeyapp.ui.bottomNavigation.BottomNavigation
 import com.example.hockeyapp.ui.signup.PrivacyScreen
 import com.example.hockeyapp.ui.login.LoginScreen
 import com.example.hockeyapp.ui.signup.PolicyScreen
 import com.example.hockeyapp.ui.signup.SignUpScreen
+import java.util.Objects
 
 
-sealed class Route{
-    data class LoginScreen(val name: String = "Login"): Route()
-    data class SignUpScreen(val name: String = "SignUp"): Route()
-    data class PrivacyScreen(val name: String = "Privacy"): Route()
-    data class PolicyScreen(val name: String = "Policy"): Route()
-    data class HomeScreen(val name: String = "Home"): Route()
+sealed class Route(val route: String) {
+    object Login : Route("Login")
+    object SignUp : Route("SignUp")
+    object Privacy : Route("Privacy")
+    object Policy : Route("Policy")
+    object Home : Route("Home")
+    object News : Route("News")
+    object Profile : Route("Profile")
+    object Setting : Route("Setting")
 }
+
+
+
+
 
 @Composable
 fun MyNavigation(
@@ -30,33 +39,33 @@ fun MyNavigation(
         navController = navHostController,
         startDestination = "Login_flow")
     {
-        navigation(startDestination = Route.LoginScreen().name,route = "Login_flow") {
+        navigation(startDestination = Route.Login.route,route = "Login_flow") {
 
-            composable(route = Route.LoginScreen().name) {
+            composable(route = Route.Login.route) {
                 LoginScreen(
                     onLoginClick = {
                         navHostController.navigate(
-                            Route.HomeScreen().name
+                            Route.Home.route
                         ) {
                             popUpTo(route = "Login_flow")
                         }
                     },
                     onSignUpClick = {
                         navHostController.navigate(
-                            Route.SignUpScreen().name
+                            Route.SignUp.route
                         )
                     }
                 )
             }
-            composable(route = Route.SignUpScreen().name) {
+            composable(route = Route.SignUp.route) {
                 SignUpScreen(
                     onSignUpClick = {
                         navHostController.navigate(
-                            Route.LoginScreen().name
+                            Route.Login.route
                         )
                     },
                     onLoginClick = {
-                        navHostController.navigate(Route.LoginScreen().name) {
+                        navHostController.navigate(Route.Login.route) {
                             popUpTo("Login_flow") {
                                 inclusive = true // 💥 Clears all the way up to Login_flow
                             }
@@ -65,33 +74,33 @@ fun MyNavigation(
                     },
                     onPolicyClicked = {
                         navHostController.navigate(
-                            Route.PolicyScreen().name
+                            Route.Policy.route
                         ) {
                             launchSingleTop = true
                         }
                     },
                     onPrivacyClicked = {
                         navHostController.navigate(
-                            Route.PrivacyScreen().name
+                            Route.Privacy.route
                         ) {
                             launchSingleTop = true
                         }
                     }
                 )
             }
-            composable(route = Route.PrivacyScreen().name) {
+            composable(route = Route.Privacy.route) {
                 PrivacyScreen {
                     navHostController.navigateUp()
                 }
             }
-            composable(route = Route.PolicyScreen().name) {
+            composable(route = Route.Policy.route) {
                 PolicyScreen {
                     navHostController.navigateUp()
                 }
             }
         }
-            composable(route = Route.HomeScreen().name) {
-                HomeScreen()
+            composable(route = Route.Home.route) {
+                BottomNavigation()
             }
 
     }
