@@ -25,6 +25,11 @@ import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.example.hockeyapp.viewModel.NewsViewModel
 import com.kwabenaberko.newsapilib.models.Article
+import android.content.Intent
+import android.net.Uri
+import androidx.compose.foundation.clickable
+import androidx.compose.ui.platform.LocalContext
+
 
 @Composable
 fun NewsPagesComponents(newsViewModel: NewsViewModel) {
@@ -40,12 +45,21 @@ fun NewsPagesComponents(newsViewModel: NewsViewModel) {
     }
 }
 
+
 @Composable
 fun ArticleItem(article: Article) {
-    Card (
-modifier = Modifier
-    .padding(8.dp),
-    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+    val context = LocalContext.current
+
+    Card(
+        modifier = Modifier
+            .padding(8.dp)
+            .clickable {
+                article.url?.let { url ->
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                    context.startActivity(intent)
+                }
+            },
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Row(
             modifier = Modifier
@@ -53,20 +67,24 @@ modifier = Modifier
                 .padding(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            AsyncImage( model = article.urlToImage?: "https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg",
+            AsyncImage(
+                model = article.urlToImage ?: "https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg",
                 contentDescription = "Article image",
-                modifier =Modifier
+                modifier = Modifier
                     .size(80.dp)
                     .aspectRatio(1f),
-                    contentScale = ContentScale.Crop)
+                contentScale = ContentScale.Crop
+            )
             Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(8.dp)
             ) {
-                Text(text = article.title,
+                Text(
+                    text = article.title,
                     fontWeight = FontWeight.Bold,
-                    maxLines = 3)
+                    maxLines = 3
+                )
                 Text(
                     text = article.source.name,
                     maxLines = 1,
