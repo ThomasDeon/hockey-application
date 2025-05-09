@@ -1,25 +1,43 @@
 package com.example.hockeyapp.ui.bottomNavigation
 
 import android.widget.Toast
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.compose.*
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.hockeyapp.Route
 import com.example.hockeyapp.ui.HomeScreen
+import com.example.hockeyapp.ui.RegisterTeam.RegisterTeam
 import com.example.hockeyapp.ui.newsPages.NewsPage
-import com.example.hockeyapp.ui.profile.Profile
+import com.example.hockeyapp.ui.profile.ProfileScreen
 import com.example.hockeyapp.ui.settings.SettingPage
 import com.example.hockeyapp.ui.theme.PurpleGrey40
+
 
 data class BottomNavItem(
     val label: String,
@@ -33,11 +51,14 @@ fun BottomNavigation() {
     val context = LocalContext.current
 
     val items = listOf(
-        BottomNavItem("Home", Icons.Default.Home, Route.Home.route),
-        BottomNavItem("News", Icons.Default.Info, Route.News.route),
-        BottomNavItem("Profile", Icons.Default.Person, Route.Profile.route),
-        BottomNavItem("Settings", Icons.Default.Settings, Route.Setting.route)
+        BottomNavItem("Home", icon = Icons.Default.Home, route = Route.Home.route),
+        BottomNavItem("News", icon = Icons.Default.PlayArrow, route = Route.News.route),
+        BottomNavItem("Profile", icon = Icons.Default.Person, route = Route.Profile.route),
+        BottomNavItem("Settings", icon = Icons.Default.DateRange, route = Route.Setting.route),
+       // BottomNavItem("RegisterTeam", icon = Icons.Default.Person, route = Route.RegisterTeam.route)
     )
+
+
 
     var selectedRoute by remember { mutableStateOf(Route.Home.route) }
 
@@ -75,7 +96,12 @@ fun BottomNavigation() {
                 ) {
                     FloatingActionButton(
                         onClick = {
-                            Toast.makeText(context, "Open Bottom Sheet", Toast.LENGTH_SHORT).show()
+                            selectedRoute = Route.RegisterTeam.route
+                            navController.navigate(Route.RegisterTeam.route) {
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
+                            }
                         },
                         containerColor = Color.White
                     ) {
@@ -92,8 +118,9 @@ fun BottomNavigation() {
         ) {
             composable(Route.Home.route) { HomeScreen() }
             composable(Route.News.route) { NewsPage() }
-            composable(Route.Profile.route) { Profile() }
+            composable(Route.Profile.route) { ProfileScreen() }
             composable(Route.Setting.route) { SettingPage() }
+            composable(Route.RegisterTeam.route) { RegisterTeam() }
         }
     }
 }

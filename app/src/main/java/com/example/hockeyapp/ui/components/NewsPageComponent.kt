@@ -29,6 +29,9 @@ import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.clickable
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import com.example.hockeyapp.R
+
 
 
 @Composable
@@ -48,49 +51,68 @@ fun NewsPagesComponents(newsViewModel: NewsViewModel) {
 
 @Composable
 fun ArticleItem(article: Article) {
+
     val context = LocalContext.current
 
-    Card(
+
+    Card (
         modifier = Modifier
             .padding(8.dp)
+            .fillMaxWidth()
             .clickable {
-                article.url?.let { url ->
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                    context.startActivity(intent)
-                }
+                        article.url.let { url ->
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                            context.startActivity(intent)
+                        }
+
             },
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
+        Column(modifier = Modifier.padding(8.dp)) {
             AsyncImage(
-                model = article.urlToImage ?: "https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg",
+                model = article.urlToImage,
                 contentDescription = "Article image",
                 modifier = Modifier
-                    .size(80.dp)
-                    .aspectRatio(1f),
-                contentScale = ContentScale.Crop
+                    .fillMaxWidth()
+                    .aspectRatio(16f / 9f),
+                contentScale = ContentScale.Crop,
+                fallback = painterResource(id = R.drawable.no_image_found),
+                error = painterResource(id = R.drawable.no_image_found),
+                placeholder = painterResource(id = R.drawable.no_image_found)
             )
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(8.dp)
-            ) {
+        }
+
+        Text(
+                text = article.title,
+                fontWeight = FontWeight.Bold,
+                fontSize = 18.sp,
+                modifier = Modifier.padding(top = 8.dp),
+                maxLines = 2
+            )
+
+            Text(
+                text = article.source.name,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.SemiBold,
+                modifier = Modifier.padding(top = 4.dp),
+                maxLines = 1
+            )
+
+            article.description?.let {
                 Text(
-                    text = article.title,
-                    fontWeight = FontWeight.Bold,
-                    maxLines = 3
-                )
-                Text(
-                    text = article.source.name,
-                    maxLines = 1,
-                    fontSize = 14.sp
+                    text = it,
+                    fontSize = 14.sp,
+                    modifier = Modifier.padding(top = 4.dp),
+                    maxLines = 2
                 )
             }
+
+            Text(
+                text = article.publishedAt,
+                fontSize = 12.sp,
+                modifier = Modifier.padding(top = 4.dp, bottom = 4.dp),
+                maxLines = 1
+            )
         }
     }
-}
+
