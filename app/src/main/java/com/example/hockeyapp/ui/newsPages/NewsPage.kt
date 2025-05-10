@@ -24,7 +24,7 @@ fun NewsPage() {
         verticalArrangement = Arrangement.Top
     ) {
         Text(
-            "News Section",
+            "International News",
             modifier = Modifier
                 .align ( Alignment.CenterHorizontally ),
             color = Color.Red,
