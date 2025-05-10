@@ -1,71 +1,83 @@
 package com.example.hockeyapp.ui.components
 
-import android.inputmethodservice.Keyboard
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import android.content.Intent
+import android.net.Uri
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil3.compose.AsyncImage
 import com.example.hockeyapp.R
-import com.example.hockeyapp.ui.defaultPadding
-import com.example.hockeyapp.ui.itemSpacing
+import com.example.hockeyapp.ui.newsPages.LocalHockeyNews
 
-data class Player(
-    val name: String,
-    val imageResId: Int,
-    val position: String,
-    val jerseyNumber: Int,
-    val goals: Int
-)
 
-val players = listOf(
-    Player("Alice", R.drawable.profile, "Forward", 9, 5),
-    Player("Bob", R.drawable.profile, "Goalkeeper", 1, 0),
-    Player("Charlie", R.drawable.profile, "Midfielder", 7, 3),
-    Player("Dana", R.drawable.profile, "Defender", 4, 0),
-    Player("Ethan", R.drawable.profile, "Forward", 11, 6),
-    Player("Fiona", R.drawable.profile, "Defender", 5, 1),
-    Player("George", R.drawable.profile, "Midfielder", 8, 2),
-    Player("Hannah", R.drawable.profile, "Forward", 10, 4),
-    Player("Isaac", R.drawable.profile, "Goalkeeper", 13, 0),
-    Player("Julia", R.drawable.profile, "Midfielder", 6, 3),
-    Player("Kevin", R.drawable.profile, "Defender", 3, 0),
-    Player("Laura", R.drawable.profile, "Forward", 12, 7),
-    Player("Mark", R.drawable.profile, "Midfielder", 14, 2),
-    Player("Nina", R.drawable.profile, "Defender", 2, 1),
-    Player("Oscar", R.drawable.profile, "Forward", 15, 5),
-    Player("Paula", R.drawable.profile, "Goalkeeper", 16, 0)
-)
+@Composable
+fun NewsSection(newsItems: List<LocalHockeyNews>) {
+    LazyColumn(modifier = Modifier.padding(16.dp)) {
+        items(newsItems.size) { index ->
+            val newsItem = newsItems[index]
+            NewsCard(newsItem)
+            Spacer(modifier = Modifier.height(16.dp))
+
+        }
+    }
+}
+
+@Composable
+fun NewsCard(newsItem: LocalHockeyNews) {
+
+    val context = LocalContext.current
+
+    Card (
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(newsItem.articleUrl))
+                context.startActivity(intent)
+            },
+        shape = RoundedCornerShape(16.dp),
+        elevation = CardDefaults.cardElevation(8.dp),
+       // colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary)
+   ) {
+        Column {
+            AsyncImage(
+                model = newsItem.imageUrl,
+                contentDescription = null,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(180.dp),
+                contentScale = ContentScale.Crop,
+                placeholder = painterResource(id = R.drawable.no_image_found),
+                error = painterResource(id = R.drawable.no_image_found),
+                fallback = painterResource(id = R.drawable.no_image_found)
+            )
+
+            Column(modifier = Modifier.padding(16.dp)) {
+                Text(newsItem.title, style = MaterialTheme.typography.titleMedium)
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(newsItem.description, style = MaterialTheme.typography.bodyMedium)
+            }
+        }
+    }
+}
+
+
 
 
 @Composable
@@ -128,131 +140,6 @@ fun SearchTextField(
         singleLine = true
     )
 
-    @Composable
-    fun k() {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(defaultPadding)
-                .border(
-                    BorderStroke(1.dp, Color.Black),
-                    shape = RoundedCornerShape(15.dp)
-                )
-                .padding(defaultPadding)
-        ) {
-            Column (
-                verticalArrangement = Arrangement.spacedBy ( itemSpacing ),
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(
-                    text = "Welcome!",
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.SemiBold
-                )
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(
-                        text = "Manage your team and training sessions",
-                        fontSize = 16.sp,
-                        color = Color.Black,
-                        modifier = Modifier.weight(1f)
-                    )
-
-                    Image(
-                        painter = painterResource(id = R.drawable.field_hockey),
-                        contentDescription = "Team",
-                        modifier = Modifier
-                            .size(64.dp)
-                            .padding(start = 16.dp)
-                    )
-                }
-            }
-        }
-    }
 }
 
-
-@Composable
-fun PlayersCardGrid() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(defaultPadding)
-    ) {
-        Text(
-            text = "Your Team",
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(bottom = itemSpacing)
-        )
-
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-            modifier = Modifier.fillMaxSize()
-        ) {
-            items(players.size) { index ->
-                val player = players[index]
-                PlayerCard( name = player.name,
-                    imageResId = player.imageResId,
-                    position = player.position,
-                    jerseyNumber = player.jerseyNumber,
-                    goals = player.goals)
-            }
-        }
-    }
-}
-
-@Composable
-fun PlayerCard( name: String,
-                imageResId: Int,
-                position: String,
-                jerseyNumber: Int,
-                goals: Int) {
-    Column(
-        modifier = Modifier
-            .padding(12.dp)
-            .fillMaxWidth()
-            .height(220.dp)
-            .border(BorderStroke(1.dp, Color.Gray),
-            shape = RoundedCornerShape(12.dp))
-    ) {
-        Image(
-            painter = painterResource(id = imageResId),
-            contentDescription = name,
-            modifier = Modifier
-                .size(100.dp)
-                .align(Alignment.CenterHorizontally)
-        )
-        Text(
-            text = name,
-            fontSize = 14.sp,
-            fontWeight = FontWeight.Medium,
-            modifier = Modifier.align(Alignment.CenterHorizontally)
-        )
-        Text(
-            text = "Position: $position",
-            fontSize = 12.sp,
-            color = Color.Gray,
-            modifier = Modifier.align(Alignment.CenterHorizontally)
-        )
-        Text(
-            text = "Jersey #: $jerseyNumber",
-            fontSize = 12.sp,
-            color = Color.Gray,
-            modifier = Modifier.align(Alignment.CenterHorizontally)
-        )
-        Text(
-            text = "Goals: $goals",
-            fontSize = 12.sp,
-            color = Color.Gray,
-            modifier = Modifier.align(Alignment.CenterHorizontally)
-        )
-    }
-}
 

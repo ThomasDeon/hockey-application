@@ -25,6 +25,7 @@ sealed class Route(val route: String) {
     object News : Route("News")
     object Profile : Route("Profile")
     object Setting : Route("Setting")
+    object RegisterTeam : Route("RegisterTeam")
 }
 
 

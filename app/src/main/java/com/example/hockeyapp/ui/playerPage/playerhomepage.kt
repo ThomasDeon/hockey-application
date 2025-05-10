@@ -44,7 +44,7 @@ import kotlinx.coroutines.delay
 fun TopTab() {
     val backgroundImages = listOf(
         painterResource(id = R.drawable.bg),
-        painterResource(id = R.drawable.bg2),
+        painterResource(id = R.drawable.bg3), //bg2
         painterResource(id = R.drawable.bg3)
     )
 
@@ -142,7 +142,7 @@ fun TopicCardsRow() {
 
         val images = listOf(
             painterResource(id = R.drawable.scores),
-            painterResource(id = R.drawable.diet),
+            painterResource(id = R.drawable.ic_diet), //diet
             painterResource(id = R.drawable.playernews),
             painterResource(id = R.drawable.union)
 
@@ -227,7 +227,7 @@ fun BenefitsRow() {
 
         val images = listOf(
             painterResource(id = R.drawable.ic_score),
-            painterResource(id = R.drawable.cal),
+            painterResource(id = R.drawable.ic_diet), //cal
             painterResource(id = R.drawable.reg),
             painterResource(id = R.drawable.ic_diet)
         )
@@ -279,7 +279,7 @@ fun BenefitsRow() {
 
 
 
-@Preview(showBackground = true)
+@Preview(showSystemUi = true)
 @Composable
 fun TabPreview() {
     HockeyAppTheme{ TopTab()
