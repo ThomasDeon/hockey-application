@@ -15,6 +15,7 @@ import com.example.hockeyapp.ui.login.LoginScreen
 import com.example.hockeyapp.ui.signup.SignUpScreen
 import com.example.hockeyapp.ui.theme.HockeyAppTheme
 
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +28,9 @@ class MainActivity : ComponentActivity() {
                 ) {
                     val navController = rememberNavController()
                     MyNavigation(navController)
+
+
+
                 }
             }
         }

@@ -11,6 +11,9 @@ import com.example.hockeyapp.ui.HomeScreen
 import com.example.hockeyapp.ui.bottomNavigation.BottomNavigation
 import com.example.hockeyapp.ui.signup.PrivacyScreen
 import com.example.hockeyapp.ui.login.LoginScreen
+import com.example.hockeyapp.ui.newsPages.NewsPage
+import com.example.hockeyapp.ui.playerPage.PlayerHomepage
+import com.example.hockeyapp.ui.playerPage.registration.RegisterPlayerScreen
 import com.example.hockeyapp.ui.signup.PolicyScreen
 import com.example.hockeyapp.ui.signup.SignUpScreen
 import java.util.Objects
@@ -26,6 +29,8 @@ sealed class Route(val route: String) {
     object Profile : Route("Profile")
     object Setting : Route("Setting")
     object RegisterTeam : Route("RegisterTeam")
+    object PlayerHome: Route("playerHome")
+    object PlayerRegister : Route("playerRegister")
 }
 
 
@@ -46,7 +51,7 @@ fun MyNavigation(
                 LoginScreen(
                     onLoginClick = {
                         navHostController.navigate(
-                            Route.Home.route
+                            Route.PlayerHome.route
                         ) {
                             popUpTo(route = "Login_flow")
                         }
@@ -100,19 +105,25 @@ fun MyNavigation(
                 }
             }
         }
-            composable(route = Route.Home.route) {
-                BottomNavigation()
-            }
 
-    }
-}
+        composable(route = Route.PlayerHome.route) {
+            BottomNavigation()
 
-fun NavController.navigateToSingleTop(route: String){
-    navigate(route){
-        popUpTo(graph.findStartDestination().id){
-            saveState = true
+
         }
-        launchSingleTop = true
-        restoreState = true
+
+
     }
 }
+
+
+
+        fun NavController.navigateToSingleTop(route: String){
+            navigate(route){
+                popUpTo(graph.findStartDestination().id){
+                    saveState = true
+                }
+                launchSingleTop = true
+                restoreState = true
+            }
+        }

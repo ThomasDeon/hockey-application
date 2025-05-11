@@ -1,5 +1,6 @@
 package com.example.hockeyapp.ui.bottomNavigation
 
+
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
@@ -34,6 +35,8 @@ import com.example.hockeyapp.Route
 import com.example.hockeyapp.ui.HomeScreen
 import com.example.hockeyapp.ui.RegisterTeam.RegisterTeam
 import com.example.hockeyapp.ui.newsPages.NewsPage
+import com.example.hockeyapp.ui.playerPage.PlayerHomepage
+import com.example.hockeyapp.ui.playerPage.registration.RegisterPlayerScreen
 import com.example.hockeyapp.ui.profile.ProfileScreen
 import com.example.hockeyapp.ui.settings.SettingPage
 import com.example.hockeyapp.ui.theme.PurpleGrey40
@@ -51,11 +54,11 @@ fun BottomNavigation() {
     val context = LocalContext.current
 
     val items = listOf(
-        BottomNavItem("Home", icon = Icons.Default.Home, route = Route.Home.route),
+        BottomNavItem("Home", icon = Icons.Default.Home, route = Route.PlayerHome.route),
         BottomNavItem("News", icon = Icons.Default.PlayArrow, route = Route.News.route),
         BottomNavItem("Profile", icon = Icons.Default.Person, route = Route.Profile.route),
         BottomNavItem("Settings", icon = Icons.Default.DateRange, route = Route.Setting.route),
-       // BottomNavItem("RegisterTeam", icon = Icons.Default.Person, route = Route.RegisterTeam.route)
+        // BottomNavItem("RegisterTeam", icon = Icons.Default.Person, route = Route.RegisterTeam.route)
     )
 
 
@@ -113,15 +116,15 @@ fun BottomNavigation() {
     ) { paddingValues ->
         NavHost(
             navController = navController,
-            startDestination = Route.Home.route,
+            startDestination = Route.PlayerHome.route,
             modifier = Modifier.padding(paddingValues)
         ) {
-            composable(Route.Home.route) { HomeScreen() }
+            composable(Route.PlayerHome.route) { PlayerHomepage(navController) }
             composable(Route.News.route) { NewsPage() }
             composable(Route.Profile.route) { ProfileScreen() }
             composable(Route.Setting.route) { SettingPage() }
+            composable(Route.PlayerRegister.route) { RegisterPlayerScreen() }
             composable(Route.RegisterTeam.route) { RegisterTeam() }
         }
     }
 }
-

@@ -2,30 +2,12 @@ package com.example.hockeyapp.ui.playerPage
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -34,27 +16,25 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.hockeyapp.R
 import com.example.hockeyapp.ui.theme.HockeyAppTheme
-
 import kotlinx.coroutines.delay
 
-
 @Composable
-fun TopTab() {
+fun PlayerHomepage(navController: NavController) {
     val backgroundImages = listOf(
         painterResource(id = R.drawable.bg),
-        painterResource(id = R.drawable.bg3), //bg2
+        painterResource(id = R.drawable.bg3),
         painterResource(id = R.drawable.bg3)
     )
 
-    // Cycle through the background images (e.g., index 0 for now, or pass index as parameter)
     var currentImageIndex by remember { mutableStateOf(0) }
 
-    // Auto-change image every 3 seconds
     LaunchedEffect(Unit) {
         while (true) {
-            delay(6000) // 3 seconds
+            delay(6000)
             currentImageIndex = (currentImageIndex + 1) % backgroundImages.size
         }
     }
@@ -73,11 +53,10 @@ fun TopTab() {
                     modifier = Modifier.matchParentSize()
                 )
 
-                // Dark overlay for readability
                 Box(
                     modifier = Modifier
                         .matchParentSize()
-                        .background(Color(0x66000000)) // semi-transparent overlay
+                        .background(Color(0x66000000))
                 )
 
                 Column(
@@ -100,14 +79,14 @@ fun TopTab() {
                 }
             }
 
-            TopicCardsRow()
+            TopicCardsRow(navController)
             BenefitsRow()
         }
     }
 }
 
 @Composable
-fun TopicCardsRow() {
+fun TopicCardsRow(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -115,11 +94,10 @@ fun TopicCardsRow() {
     ) {
         Text(
             text = "POSTS",
-
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
             color = Color.Black,
-            modifier = Modifier.padding(top=10.dp)
+            modifier = Modifier.padding(top = 10.dp)
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -129,34 +107,44 @@ fun TopicCardsRow() {
             "Health and Fitness",
             "News",
             "Player Registration",
-
-            )
+        )
 
         val descriptions = listOf(
             "View the scores for your team",
             "Stay in shape and injury-free",
             "Latest updates and headlines",
             "Register yourself for your team",
-
-            )
+        )
 
         val images = listOf(
             painterResource(id = R.drawable.scores),
-            painterResource(id = R.drawable.ic_diet), //diet
+            painterResource(id = R.drawable.ic_diet),
             painterResource(id = R.drawable.playernews),
             painterResource(id = R.drawable.union)
-
         )
 
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(12.dp),
-            contentPadding = PaddingValues(top=16.dp)
+            contentPadding = PaddingValues(top = 16.dp)
         ) {
             items(topics.size) { index ->
+                val destinationRoute = when (topics[index]) {
+                    "Live Scores" -> "live_scores"
+                    "Health and Fitness" -> "health_fitness"
+                    "News" -> "News"
+                    "Player Registration" -> "playerRegister"
+                    else -> ""
+                }
+
                 Card(
                     modifier = Modifier
                         .width(220.dp)
-                        .height(180.dp),
+                        .height(180.dp)
+                        .clickable {
+                            if (destinationRoute.isNotEmpty()) {
+                                navController.navigate(destinationRoute)
+                            }
+                        },
                     shape = RoundedCornerShape(16.dp),
                     elevation = CardDefaults.cardElevation(8.dp)
                 ) {
@@ -193,7 +181,6 @@ fun TopicCardsRow() {
     }
 }
 
-
 @Composable
 fun BenefitsRow() {
     Column(
@@ -227,7 +214,7 @@ fun BenefitsRow() {
 
         val images = listOf(
             painterResource(id = R.drawable.ic_score),
-            painterResource(id = R.drawable.ic_diet), //cal
+            painterResource(id = R.drawable.ic_diet),
             painterResource(id = R.drawable.reg),
             painterResource(id = R.drawable.ic_diet)
         )
@@ -276,14 +263,11 @@ fun BenefitsRow() {
     }
 }
 
-
-
-
-@Preview(showSystemUi = true)
+@Preview
 @Composable
 fun TabPreview() {
-    HockeyAppTheme{ TopTab()
+    HockeyAppTheme {
+        val navController = rememberNavController()
+        PlayerHomepage(navController)
     }
 }
-
-
