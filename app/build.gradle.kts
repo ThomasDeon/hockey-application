@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -49,6 +50,8 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.support.annotations)
+    implementation(libs.material)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -56,14 +59,21 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-    //navigation
-    implementation ("androidx.navigation:navigation-compose:2.8.9")
 
-//    newAPI
-    implementation ("com.github.KwabenBerko:News-API-Java:1.0.2")
-    implementation ("androidx.compose.runtime:runtime-livedata:1.6.1")
+    // Navigation
+    implementation(libs.androidx.navigation.compose)
 
-    implementation("io.coil-kt.coil3:coil-compose:3.1.0")
-    implementation("io.coil-kt.coil3:coil-network-okhttp:3.1.0")
+    // News API
+    implementation(libs.news.api.java)
+    implementation(libs.androidx.runtime.livedata)
 
+    // Coil for images
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network.okhttp)
+
+    //  ROOM with KSP
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
 }
+
