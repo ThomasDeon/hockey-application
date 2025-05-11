@@ -118,7 +118,7 @@ fun TopicCardsRow(navController: NavController) {
 
         val images = listOf(
             painterResource(id = R.drawable.scores),
-            painterResource(id = R.drawable.ic_diet),
+            painterResource(id = R.drawable.diet),
             painterResource(id = R.drawable.playernews),
             painterResource(id = R.drawable.union)
         )
@@ -130,7 +130,7 @@ fun TopicCardsRow(navController: NavController) {
             items(topics.size) { index ->
                 val destinationRoute = when (topics[index]) {
                     "Live Scores" -> "live_scores"
-                    "Health and Fitness" -> "health_fitness"
+                    "Health and Fitness" -> "health"
                     "News" -> "News"
                     "Player Registration" -> "playerRegister"
                     else -> ""

@@ -31,6 +31,8 @@ sealed class Route(val route: String) {
     object RegisterTeam : Route("RegisterTeam")
     object PlayerHome: Route("playerHome")
     object PlayerRegister : Route("playerRegister")
+    object WebArticle : Route("webview_screen/{url}")
+    object healthFitness: Route("health")
 }
 
 

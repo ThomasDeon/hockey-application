@@ -1,6 +1,5 @@
 package com.example.hockeyapp.ui.bottomNavigation
 
-
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
@@ -28,18 +27,22 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.hockeyapp.Route
 import com.example.hockeyapp.ui.HomeScreen
 import com.example.hockeyapp.ui.RegisterTeam.RegisterTeam
 import com.example.hockeyapp.ui.newsPages.NewsPage
 import com.example.hockeyapp.ui.playerPage.PlayerHomepage
+import com.example.hockeyapp.ui.playerPage.health.HealthFitness
+import com.example.hockeyapp.ui.playerPage.health.WebArticleScreen
 import com.example.hockeyapp.ui.playerPage.registration.RegisterPlayerScreen
 import com.example.hockeyapp.ui.profile.ProfileScreen
 import com.example.hockeyapp.ui.settings.SettingPage
-import com.example.hockeyapp.ui.theme.PurpleGrey40
+
 
 
 data class BottomNavItem(
@@ -67,7 +70,7 @@ fun BottomNavigation() {
 
     Scaffold(
         bottomBar = {
-            BottomAppBar(containerColor = PurpleGrey40) {
+            BottomAppBar() {
                 items.forEach { item ->
                     IconButton(
                         onClick = {
@@ -108,7 +111,7 @@ fun BottomNavigation() {
                         },
                         containerColor = Color.White
                     ) {
-                        Icon(Icons.Default.Add, contentDescription = "Add", tint = PurpleGrey40)
+                        Icon(Icons.Default.Add, contentDescription = "Add")
                     }
                 }
             }
@@ -120,11 +123,21 @@ fun BottomNavigation() {
             modifier = Modifier.padding(paddingValues)
         ) {
             composable(Route.PlayerHome.route) { PlayerHomepage(navController) }
+            composable(Route.healthFitness.route) { HealthFitness() }
             composable(Route.News.route) { NewsPage() }
             composable(Route.Profile.route) { ProfileScreen() }
             composable(Route.Setting.route) { SettingPage() }
             composable(Route.PlayerRegister.route) { RegisterPlayerScreen() }
             composable(Route.RegisterTeam.route) { RegisterTeam() }
+            composable(
+                route = "webview_screen/{url}",
+                arguments = listOf(navArgument("url") { type = NavType.StringType })
+            ) { backStackEntry ->
+                val url = backStackEntry.arguments?.getString("url") ?: ""
+                WebArticleScreen(url = url)
+            }
+
+
         }
     }
 }
