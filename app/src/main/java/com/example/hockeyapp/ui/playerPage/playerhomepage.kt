@@ -25,7 +25,7 @@ import kotlinx.coroutines.delay
 @Composable
 fun PlayerHomepage(navController: NavController) {
     val backgroundImages = listOf(
-        painterResource(id = R.drawable.bg),
+        painterResource(id = R.drawable.bg), 
         painterResource(id = R.drawable.bg3),
         painterResource(id = R.drawable.bg3)
     )
