@@ -34,7 +34,9 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.hockeyapp.R
+import com.example.hockeyapp.authViewModel.AuthViewModel
 import com.example.hockeyapp.ui.components.LoginText
 import com.example.hockeyapp.ui.components.LoginTextField
 
@@ -42,8 +44,8 @@ val defaultPadding = 16.dp
 val itemSpacing = 8.dp
 
 @Composable
-fun LoginScreen(onLoginClick:() -> Unit, onSignUpClick: () -> Unit) {
-    val (userName, setUsername) = rememberSaveable {
+fun LoginScreen(onLoginSuccess:() -> Unit, onSignUpClick: () -> Unit, authViewModel: AuthViewModel = viewModel()) {
+    val (email, setEmail) = rememberSaveable {
         mutableStateOf("")
     }
     val (password, setPassword) = rememberSaveable {
@@ -52,7 +54,7 @@ fun LoginScreen(onLoginClick:() -> Unit, onSignUpClick: () -> Unit) {
     val (checked, onCheckedChange) = rememberSaveable {
         mutableStateOf(false)
     }
-    val isFieldsEmpty = userName.isNotEmpty() && password.isNotEmpty()
+    val isFieldsEmpty = email.isNotEmpty() && password.isNotEmpty()
     val context = LocalContext.current
 
     Column(
@@ -70,9 +72,9 @@ fun LoginScreen(onLoginClick:() -> Unit, onSignUpClick: () -> Unit) {
 
         )
         LoginTextField(
-            value = userName,
-            onValueChange = setUsername,
-            labelText = "Username/Email",
+            value = email,
+            onValueChange = setEmail,
+            labelText = "Email",
             leadingIcon = Icons.Default.Person,
             modifier = Modifier.fillMaxWidth()
         )
@@ -110,9 +112,18 @@ fun LoginScreen(onLoginClick:() -> Unit, onSignUpClick: () -> Unit) {
 
         Spacer(Modifier.height(itemSpacing))
 
-        Button(onClick = onLoginClick,
-            modifier = Modifier.fillMaxWidth(),
-            enabled = isFieldsEmpty
+        Button(onClick = {
+            authViewModel.login (
+                email, password
+            ){success, errorMessage ->
+                if(success) {
+                    Toast.makeText(context, "Login successful", Toast.LENGTH_SHORT).show()
+                    onLoginSuccess()
+                } else {
+                    Toast.makeText(context, errorMessage ?: "Unknown error", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
             ) {
             Text(text = "Login")
         }
@@ -186,8 +197,3 @@ fun AlternativeLoginOptions(
     }
 }
 
-@Preview(showSystemUi = true)
-@Composable
-fun prevLoginScreen() {
-    LoginScreen({}, {})
-}

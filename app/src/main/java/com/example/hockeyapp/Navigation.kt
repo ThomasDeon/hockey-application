@@ -1,22 +1,20 @@
 package com.example.hockeyapp
 
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.example.hockeyapp.ui.HomeScreen
+import com.example.hockeyapp.authViewModel.AuthViewModel
 import com.example.hockeyapp.ui.bottomNavigation.BottomNavigation
-import com.example.hockeyapp.ui.signup.PrivacyScreen
 import com.example.hockeyapp.ui.login.LoginScreen
-import com.example.hockeyapp.ui.newsPages.NewsPage
-import com.example.hockeyapp.ui.playerPage.PlayerHomepage
-import com.example.hockeyapp.ui.playerPage.registration.RegisterPlayerScreen
 import com.example.hockeyapp.ui.signup.PolicyScreen
+import com.example.hockeyapp.ui.signup.PrivacyScreen
 import com.example.hockeyapp.ui.signup.SignUpScreen
-import java.util.Objects
+
 
 
 sealed class Route(val route: String) {
@@ -31,7 +29,6 @@ sealed class Route(val route: String) {
     object RegisterTeam : Route("RegisterTeam")
     object PlayerHome: Route("playerHome")
     object PlayerRegister : Route("playerRegister")
-    object WebArticle : Route("webview_screen/{url}")
     object healthFitness: Route("health")
 }
 
@@ -51,11 +48,10 @@ fun MyNavigation(
 
             composable(route = Route.Login.route) {
                 LoginScreen(
-                    onLoginClick = {
-                        navHostController.navigate(
-                            Route.PlayerHome.route
-                        ) {
-                            popUpTo(route = "Login_flow")
+                    onLoginSuccess = {
+                        navHostController.navigate(Route.PlayerHome.route) {
+                            popUpTo("Login_flow") {inclusive = true}
+                            launchSingleTop = true
                         }
                     },
                     onSignUpClick = {
@@ -93,7 +89,14 @@ fun MyNavigation(
                         ) {
                             launchSingleTop = true
                         }
+                    },
+                    onSignUpSuccess = {
+                        navHostController.navigate(Route.Login.route){
+                            popUpTo("Login_flow") { inclusive = true }
+                            launchSingleTop = true
+                        }
                     }
+
                 )
             }
             composable(route = Route.Privacy.route) {

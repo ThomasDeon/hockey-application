@@ -40,6 +40,8 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.hockeyapp.authViewModel.AuthViewModel
 import com.example.hockeyapp.ui.components.LoginText
 import com.example.hockeyapp.ui.components.LoginTextField
 import com.example.hockeyapp.ui.login.defaultPadding
@@ -52,6 +54,8 @@ fun SignUpScreen(
     onLoginClick: () -> Unit,
     onPolicyClicked: () -> Unit,
     onPrivacyClicked: () -> Unit,
+    onSignUpSuccess: () -> Unit,
+    authViewModel: AuthViewModel = viewModel()
 ){
     val (firstName, onFirstNameChange) = rememberSaveable {
         mutableStateOf("")
@@ -213,9 +217,21 @@ fun SignUpScreen(
 
         Button(
             onClick = {
-                isPasswordSame = password != confirmPassword
-                if (!isPasswordSame){
-                    onSignUpClick()
+                authViewModel.PlayerSignUp(
+                    firstName,
+                    lastName,
+                    teamName,
+                    email,
+                    dateOfBirth,
+                    password,
+                    confirmPassword
+                ){success, errorMessage ->
+                    if(success) {
+                        Toast.makeText(context, "Account created successfully", Toast.LENGTH_SHORT).show()
+                        onSignUpSuccess()
+                    } else {
+                        Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+                    }
                 }
             },
             modifier = Modifier.fillMaxWidth(),
@@ -254,5 +270,5 @@ fun SignUpScreen(
 @Preview(showSystemUi = true)
 @Composable
 fun PrevSignUp(){
-    SignUpScreen({},{},{},{})
+    SignUpScreen({},{},{},{},{})
 }
