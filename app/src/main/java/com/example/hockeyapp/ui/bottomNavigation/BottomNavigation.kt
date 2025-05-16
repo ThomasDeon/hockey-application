@@ -36,6 +36,8 @@ import com.example.hockeyapp.Route
 import com.example.hockeyapp.ui.HomeScreen
 import com.example.hockeyapp.ui.RegisterTeam.RegisterTeam
 import com.example.hockeyapp.ui.newsPages.NewsPage
+import com.example.hockeyapp.ui.playerPage.LiveScores.LiveGamesScreen
+import com.example.hockeyapp.ui.playerPage.PlayerEvent.EventPage
 import com.example.hockeyapp.ui.playerPage.PlayerHomepage
 import com.example.hockeyapp.ui.playerPage.health.HealthFitness
 import com.example.hockeyapp.ui.playerPage.health.WebArticleScreen
@@ -119,16 +121,16 @@ fun BottomNavigation() {
     ) { paddingValues ->
         NavHost(
             navController = navController,
-            startDestination = Route.PlayerHome.route,
+            startDestination = Route.Home.route,
             modifier = Modifier.padding(paddingValues)
         ) {
-            composable(Route.PlayerHome.route) { PlayerHomepage(navController) }
+            composable(Route.Home.route) { HomeScreen() }
             composable(Route.healthFitness.route) { HealthFitness() }
             composable(Route.News.route) { NewsPage() }
             composable(Route.Profile.route) { ProfileScreen() }
             composable(Route.Setting.route) { SettingPage() }
-            composable(Route.PlayerRegister.route) { RegisterPlayerScreen() }
             composable(Route.RegisterTeam.route) { RegisterTeam() }
+            composable(Route.YouTubeVid.route) { LiveGamesScreen() }
             composable(
                 route = "webview_screen/{url}",
                 arguments = listOf(navArgument("url") { type = NavType.StringType })

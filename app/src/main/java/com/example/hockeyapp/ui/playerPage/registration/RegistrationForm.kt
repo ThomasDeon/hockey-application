@@ -1,10 +1,12 @@
 package com.example.hockeyapp.ui.playerPage.registration
 
+import android.content.Intent
+import android.net.Uri
 import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
@@ -17,214 +19,121 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.font.FontWeight
+
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
+import androidx.compose.ui.unit.sp
+
 import androidx.navigation.compose.rememberNavController
 import com.example.hockeyapp.R
 import com.example.hockeyapp.Route
 import com.example.hockeyapp.ui.components.ImageSlideshow
+import com.example.hockeyapp.ui.playerPage.health.HealthTab
 import com.example.hockeyapp.ui.theme.HockeyAppTheme
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.*
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.*
+
+
+
 @Composable
-fun RegisterPlayerScreen() {
-    val backgroundImages = listOf(
-        R.drawable.img_1,
-        R.drawable.img,     // Replace with actual image resource name
-        R.drawable.img_2
-    )
-
-    val context = LocalContext.current
-
-    // Form field states
-    var firstName by remember { mutableStateOf("") }
-    var lastName by remember { mutableStateOf("") }
-    var birthDate by remember { mutableStateOf("") }
-    var address by remember { mutableStateOf("") }
-    var selectedPosition by remember { mutableStateOf("Forward") }
-    var teamName by remember { mutableStateOf("") }
-
-    val isSubmitEnabled by remember(firstName, lastName, birthDate, address, teamName) {
-        derivedStateOf {
-            firstName.isNotEmpty() &&
-                    lastName.isNotEmpty() &&
-                    birthDate.isNotEmpty() &&
-                    address.isNotEmpty() &&
-                    teamName.isNotEmpty()
-        }
+fun RegTab(title: String, onClick: () -> Unit, color: Color) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp)
+            .height(60.dp)
+            .clip(RoundedCornerShape(16.dp))
+            .background(color)
+            .clickable { onClick() },
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = title,
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color.White
+        )
     }
+}
 
-    // 🔷 Box: Background Slideshow + Form on top
-    Box(modifier = Modifier.fillMaxSize()) {
-        // 🔹 Background slideshow at the top
-        ImageSlideshow(
-            imageList = backgroundImages,
+@Composable
+fun RegisterPlayerScreen(navController: NavController) {
+    val scrollState = rememberScrollState()
+    Column(
+        modifier = Modifier.fillMaxSize()
+            .verticalScroll(scrollState)
+    ) {
+        // Header
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(80.dp)
+                .background(MaterialTheme.colorScheme.primary),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = "Get Involved",
+                style = MaterialTheme.typography.titleLarge,
+                color= Color.White
+            )
+        }
+
+        Image(
+            painter = painterResource(id = R.drawable.bg2), // Replace with your image
+            contentDescription = "Hockey Banner",
             modifier = Modifier
                 .fillMaxWidth()
                 .height(300.dp)
+                .offset(y = (-30).dp)
+        )
+        Spacer(modifier = Modifier.height(35.dp))
+
+        RegTab(
+            title = "Coach Registration",
+            onClick = { navController.navigate(Route.Coach.route) },
+            color = MaterialTheme.colorScheme.primary
         )
 
-        // 🔹 Form container layered on top of the slideshow
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(top = 200.dp) // adjust to make space for slideshow
-                .background(
-                    color = MaterialTheme.colorScheme.background.copy(alpha = 0.5f),
-                    shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)
-                )
-                .verticalScroll(rememberScrollState())
-                .padding(24.dp),
-            verticalArrangement = Arrangement.Top,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text = "Player Registration",
-                style = MaterialTheme.typography.headlineMedium
-            )
+        Spacer(modifier = Modifier.height(16.dp))
 
-            Spacer(modifier = Modifier.height(16.dp))
+        RegTab(
+            title = "Player Registration",
+            onClick = { navController.navigate(Route.Player.route) },
+            color = MaterialTheme.colorScheme.primary
+        )
 
-            OutlinedTextField(
-                value = firstName,
-                onValueChange = { firstName = it },
-                label = { Text("First Name") },
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(12.dp)
-            )
+        Spacer(modifier = Modifier.height(16.dp))
 
-            Spacer(modifier = Modifier.height(12.dp))
-
-            OutlinedTextField(
-                value = lastName,
-                onValueChange = { lastName = it },
-                label = { Text("Last Name") },
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(12.dp)
-            )
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            OutlinedTextField(
-                value = birthDate,
-                onValueChange = { birthDate = it },
-                label = { Text("Birthdate (MM/DD/YYYY)") },
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(12.dp)
-            )
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            OutlinedTextField(
-                value = address,
-                onValueChange = { address = it },
-                label = { Text("Address") },
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(12.dp)
-            )
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            DropdownMenuField(
-                label = "Position",
-                options = listOf("Forward", "Defence", "Goalie"),
-                selectedOption = selectedPosition,
-                onOptionSelected = { selectedPosition = it }
-            )
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            OutlinedTextField(
-                value = teamName,
-                onValueChange = { teamName = it },
-                label = { Text("Team Name") },
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(12.dp)
-            )
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            Button(
-                onClick = {
-                    if (isSubmitEnabled) {
-                        // Clear the form fields
-                        firstName = ""
-                        lastName = ""
-                        birthDate = ""
-                        address = ""
-                        selectedPosition = "Forward"
-                        teamName = ""
-
-                        // Show success message
-                        Toast.makeText(context, "Registration Successful", Toast.LENGTH_SHORT).show()
-
-                        // Navigate to player homepage
-
-                    } else {
-                        Toast.makeText(context, "Please fill all fields", Toast.LENGTH_SHORT).show()
-                    }
-                },
-                modifier = Modifier.fillMaxWidth(),
-                enabled = isSubmitEnabled
-            ) {
-                Text("Register Player")
-            }
-        }
+        RegTab(
+            title = "Team Registration",
+            onClick = { navController.navigate(Route.Team.route) },
+            color = MaterialTheme.colorScheme.primary
+        )
     }
 }
 
+
+@Preview(showBackground = true)
 @Composable
-fun DropdownMenuField(
-    label: String,
-    options: List<String>,
-    selectedOption: String,
-    onOptionSelected: (String) -> Unit
-) {
-    var expanded by remember { mutableStateOf(false) }
-
-    Box(modifier = Modifier.fillMaxWidth()) {
-        OutlinedTextField(
-            value = selectedOption,
-            onValueChange = {},
-            readOnly = true,
-            label = { Text(label) },
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(12.dp),
-            trailingIcon = {
-                IconButton(onClick = { expanded = !expanded }) {
-                    Icon(
-                        imageVector = Icons.Default.ArrowDropDown,
-                        contentDescription = "Dropdown Icon"
-                    )
-                }
-            }
-        )
-
-        DropdownMenu(
-            expanded = expanded,
-            onDismissRequest = { expanded = false }
-        ) {
-            options.forEach { option ->
-                DropdownMenuItem(
-                    text = { Text(option) },
-                    onClick = {
-                        onOptionSelected(option)
-                        expanded = false
-                    }
-                )
-            }
-        }
-    }
-}
-
-@Preview
-@Composable
-fun FormPreview() {
-    HockeyAppTheme {
-        RegisterPlayerScreen()
+fun RegisterPlayerScreenPreview() {
+    MaterialTheme {
+        RegisterPlayerScreen(navController = rememberNavController())
     }
 }

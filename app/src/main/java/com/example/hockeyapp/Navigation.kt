@@ -12,8 +12,7 @@ import com.example.hockeyapp.ui.bottomNavigation.BottomNavigation
 import com.example.hockeyapp.ui.signup.PrivacyScreen
 import com.example.hockeyapp.ui.login.LoginScreen
 import com.example.hockeyapp.ui.newsPages.NewsPage
-import com.example.hockeyapp.ui.playerPage.PlayerHomepage
-import com.example.hockeyapp.ui.playerPage.registration.RegisterPlayerScreen
+import com.example.hockeyapp.ui.playerPage.Nav.PlayerNavigation
 import com.example.hockeyapp.ui.signup.PolicyScreen
 import com.example.hockeyapp.ui.signup.SignUpScreen
 import java.util.Objects
@@ -33,6 +32,11 @@ sealed class Route(val route: String) {
     object PlayerRegister : Route("playerRegister")
     object WebArticle : Route("webview_screen/{url}")
     object healthFitness: Route("health")
+    object YouTubeVid: Route("utubevid")
+    object Event: Route("PlayerEvent")
+    object Coach : Route("registerCoach")
+    object Player : Route("registerPlayer")
+    object Team : Route("registerTeam")
 }
 
 
@@ -51,12 +55,20 @@ fun MyNavigation(
 
             composable(route = Route.Login.route) {
                 LoginScreen(
-                    onLoginClick = {
+                    onLoginClick = { isAdmin ->
+                        if (isAdmin){
                         navHostController.navigate(
-                            Route.PlayerHome.route
+                            Route.Home.route
                         ) {
                             popUpTo(route = "Login_flow")
                         }
+                    }else{
+                            navHostController.navigate(
+                                Route.PlayerHome.route
+                            ) {
+                                popUpTo(route = "Login_flow")
+                            }
+                    }
                     },
                     onSignUpClick = {
                         navHostController.navigate(
@@ -109,6 +121,11 @@ fun MyNavigation(
         }
 
         composable(route = Route.PlayerHome.route) {
+            PlayerNavigation()
+
+
+        }
+        composable(route = Route.Home.route) {
             BottomNavigation()
 
 

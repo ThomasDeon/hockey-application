@@ -41,7 +41,7 @@ fun HealthFitness() {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(80.dp)
-                .background(Color.Blue),
+                .background(Color.Gray),
             contentAlignment = Alignment.Center
         ) {
             Text(

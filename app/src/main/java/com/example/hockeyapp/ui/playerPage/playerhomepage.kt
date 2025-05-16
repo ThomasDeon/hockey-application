@@ -4,8 +4,10 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -25,8 +27,8 @@ import kotlinx.coroutines.delay
 @Composable
 fun PlayerHomepage(navController: NavController) {
     val backgroundImages = listOf(
-        painterResource(id = R.drawable.bg),
-        painterResource(id = R.drawable.bg3),
+        painterResource(id = R.drawable.union),
+        painterResource(id = R.drawable.bg2),
         painterResource(id = R.drawable.bg3)
     )
 
@@ -39,8 +41,19 @@ fun PlayerHomepage(navController: NavController) {
         }
     }
 
-    Surface(modifier = Modifier.fillMaxSize()) {
-        Column {
+
+
+    Surface(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White),
+        color = Color.White
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+
+        ) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -79,72 +92,65 @@ fun PlayerHomepage(navController: NavController) {
                 }
             }
 
-            TopicCardsRow(navController)
-            BenefitsRow()
+            TopicCardsColumn(navController)
         }
     }
 }
 
 @Composable
-fun TopicCardsRow(navController: NavController) {
+fun TopicCardsColumn(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 10.dp, top = 16.dp)
+            .background(Color.White)
+            .padding(start = 10.dp, top = 16.dp, end = 10.dp)
     ) {
-        Text(
-            text = "POSTS",
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.Bold,
-            color = Color.Black,
-            modifier = Modifier.padding(top = 10.dp)
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
         val topics = listOf(
-            "Live Scores",
-            "Health and Fitness",
+            "Live Games",
+            "Leagues",
             "News",
-            "Player Registration",
+            "Get Involved"
         )
 
         val descriptions = listOf(
-            "View the scores for your team",
+            "Watch live games from the African hockey federation",
             "Stay in shape and injury-free",
             "Latest updates and headlines",
-            "Register yourself for your team",
+            "Register yourself for your team"
         )
 
         val images = listOf(
             painterResource(id = R.drawable.scores),
             painterResource(id = R.drawable.diet),
             painterResource(id = R.drawable.playernews),
-            painterResource(id = R.drawable.union)
+            painterResource(id = R.drawable.playerreg)
         )
 
-        LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-            contentPadding = PaddingValues(top = 16.dp)
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+
+
         ) {
             items(topics.size) { index ->
                 val destinationRoute = when (topics[index]) {
-                    "Live Scores" -> "live_scores"
-                    "Health and Fitness" -> "health"
+                    "Live Games" -> "utubevid"
+                    "Leagues" -> "leagues"
                     "News" -> "News"
-                    "Player Registration" -> "playerRegister"
+                    "Get Involved" -> "playerRegister"
                     else -> ""
                 }
 
                 Card(
                     modifier = Modifier
-                        .width(220.dp)
-                        .height(180.dp)
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp)
                         .clickable {
                             if (destinationRoute.isNotEmpty()) {
                                 navController.navigate(destinationRoute)
                             }
                         },
+                    colors = CardDefaults.cardColors(containerColor = Color.White),
                     shape = RoundedCornerShape(16.dp),
                     elevation = CardDefaults.cardElevation(8.dp)
                 ) {
@@ -158,10 +164,7 @@ fun TopicCardsRow(navController: NavController) {
                                 .height(100.dp)
                         )
                         Spacer(modifier = Modifier.height(8.dp))
-                        Column(
-                            modifier = Modifier
-                                .padding(horizontal = 8.dp)
-                        ) {
+                        Column(modifier = Modifier.padding(horizontal = 8.dp)) {
                             Text(
                                 text = topics[index],
                                 fontWeight = FontWeight.Bold,
@@ -171,91 +174,9 @@ fun TopicCardsRow(navController: NavController) {
                             Text(
                                 text = descriptions[index],
                                 style = MaterialTheme.typography.bodySmall,
-                                color = Color.Black
+                                color = Color.Gray
                             )
                         }
-                    }
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun BenefitsRow() {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 10.dp, top = 20.dp)
-    ) {
-        Text(
-            text = "Why use this app?",
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.Bold,
-            color = Color.Black,
-            modifier = Modifier.padding(top = 20.dp)
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        val benefits = listOf(
-            "Live Scores and Match Updates",
-            "Schedule Tracking",
-            "Team Registration",
-            "Training and Fitness Tips"
-        )
-
-        val descriptions = listOf(
-            "Instantly access real-time scores and game stats.",
-            "View upcoming match schedules, practices, and tournament dates.",
-            "Register your team for leagues easily and efficiently.",
-            "Stay fit and reduce injuries with curated fitness routines and health advice."
-        )
-
-        val images = listOf(
-            painterResource(id = R.drawable.ic_score),
-            painterResource(id = R.drawable.ic_diet),
-            painterResource(id = R.drawable.reg),
-            painterResource(id = R.drawable.ic_diet)
-        )
-
-        LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-            contentPadding = PaddingValues(top = 16.dp)
-        ) {
-            items(benefits.size) { index ->
-                Card(
-                    modifier = Modifier
-                        .width(220.dp)
-                        .height(180.dp),
-                    shape = RoundedCornerShape(16.dp),
-                    elevation = CardDefaults.cardElevation(8.dp)
-                ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Top,
-                        modifier = Modifier.padding(8.dp)
-                    ) {
-                        Image(
-                            painter = images[index],
-                            contentDescription = benefits[index],
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier
-                                .height(60.dp)
-                                .width(60.dp)
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(
-                            text = benefits[index],
-                            fontWeight = FontWeight.Bold,
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = Color.Black
-                        )
-                        Text(
-                            text = descriptions[index],
-                            style = MaterialTheme.typography.bodySmall,
-                            color = Color.Gray
-                        )
                     }
                 }
             }
