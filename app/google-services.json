@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1012651598440",
+    "project_id": "hockey-app-62cae",
+    "storage_bucket": "hockey-app-62cae.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1012651598440:android:8f36050905fc8af2e7d1dd",
+        "android_client_info": {
+          "package_name": "com.example.hockeyapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkkomuN3PxuFpQFH1taxy8PTPbQJAUcpQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
