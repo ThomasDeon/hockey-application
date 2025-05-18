@@ -31,7 +31,7 @@ sealed class Route(val route: String) {
     object PlayerRegister : Route("playerRegister")
     object healthFitness: Route("health")
     object Event : Route("playerEvent")
-    object YouTubeVid : Route(" utubevid" )
+    object YouTubeVid : Route("utubevid" )
     object Coach: Route( "coach")
     object Team : Route ("team")
     object Player : Route("player")
