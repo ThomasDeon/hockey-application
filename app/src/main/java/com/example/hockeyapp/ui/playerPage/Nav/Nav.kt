@@ -39,6 +39,7 @@ import com.example.hockeyapp.ui.RegisterTeam.RegisterTeam
 import com.example.hockeyapp.ui.newsPages.NewsPage
 import com.example.hockeyapp.ui.playerPage.Coach.CoachRegistrationScreen
 import com.example.hockeyapp.ui.playerPage.LiveScores.LiveGamesScreen
+import com.example.hockeyapp.ui.playerPage.Player.ClubPage
 import com.example.hockeyapp.ui.playerPage.Player.PlayerRegistrationScreen
 import com.example.hockeyapp.ui.playerPage.PlayerEvent.Event
 import com.example.hockeyapp.ui.playerPage.PlayerEvent.EventPage
@@ -115,8 +116,8 @@ fun PlayerNavigation(modifier: Modifier= Modifier){
             composable(Route.RegisterTeam.route) { RegisterTeam() }
             composable(Route.YouTubeVid.route) { LiveGamesScreen() }
             composable(Route.Coach.route) { CoachRegistrationScreen() }
-
-            composable(Route.Player.route) { PlayerRegistrationScreen() }
+            composable(Route.Club.route) { ClubPage() }
+            composable(Route.Player.route) { PlayerRegistrationScreen(navController) }
             composable(Route.Team.route) { TeamRegistrationScreen() }
             composable(
                 route = "webview_screen/{url}",

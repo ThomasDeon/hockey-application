@@ -30,7 +30,8 @@ object YouTubeRepository {
             channelId = CHANNEL_ID,
             type = "video",
             eventType = null,
-            key = API_KEY
+            key = API_KEY,
+            maxResults = 25
         )
         return response.items.map { item ->
             YouTubeVideo(
@@ -50,7 +51,8 @@ object YouTubeRepository {
             @Query("channelId") channelId: String,
             @Query("eventType") eventType: String?,
             @Query("type") type: String,
-            @Query("key") key: String
+            @Query("key") key: String,
+            @Query("maxResults") maxResults: Int = 25// max videos displayed is 25
         ): YouTubeResponse
     }
 }

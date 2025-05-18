@@ -112,7 +112,7 @@ fun TopicCardsColumn(navController: NavController) {
         ) {
             val topics = listOf(
                 "Live Games",
-                "Leagues",
+                "Health and Fitness",
                 "News",
                 "Get Involved"
             )
@@ -140,7 +140,7 @@ fun TopicCardsColumn(navController: NavController) {
                 items(topics.size) { index ->
                     val destinationRoute = when (topics[index]) {
                         "Live Games" -> "utubevid"
-                        "Leagues" -> "leagues"
+                        "Health and Fitness" -> "health"
                         "News" -> "News"
                         "Get Involved" -> "playerRegister"
                         else -> ""
@@ -179,7 +179,7 @@ fun TopicCardsColumn(navController: NavController) {
                                 Text(
                                     text = descriptions[index],
                                     style = MaterialTheme.typography.bodySmall,
-                                    color = Color.Gray
+                                    color = Color.Black
                                 )
                             }
                         }

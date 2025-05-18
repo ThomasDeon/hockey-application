@@ -68,7 +68,9 @@ import com.example.hockeyapp.R
                         title = {
                             Text(
                                 text = "Team Registration",
-                                color = Color.White
+                                color = Color.White,
+
+
                             )
                         },
                         colors = TopAppBarDefaults.topAppBarColors(

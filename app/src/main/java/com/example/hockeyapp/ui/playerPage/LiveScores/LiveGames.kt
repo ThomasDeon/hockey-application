@@ -31,16 +31,16 @@ import com.example.hockeyapp.R
 @Composable
 fun LiveGamesScreen(viewModel: LiveGamesViewModel = viewModel()) {
     val videos by viewModel.videos.collectAsState()
-
+// used to get the current context of the app(like an activity or application) to access android framework like showing a toast
     val context = LocalContext.current
-
-    Column(modifier = Modifier.padding(16.dp)) {
+//fillMaxSize makes the compsable expand to fill both the width and heigh of its parent
+    Column(modifier = Modifier.fillMaxSize()) {
         Box(
             modifier = Modifier
-                .fillMaxWidth()
-                 // Set background color to gray
-                .padding(vertical = 8.dp) // Optional: add some padding to the Box
-                .background(MaterialTheme.colorScheme.primary, shape = RoundedCornerShape(8.dp))
+                .fillMaxWidth() //used when you want the element to stretch accross full width but not change height
+                .height(80.dp)
+                .background(MaterialTheme.colorScheme.primary),
+            contentAlignment = Alignment.Center
         ) {        // Header Text
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Image(
@@ -75,9 +75,12 @@ fun LiveGamesScreen(viewModel: LiveGamesViewModel = viewModel()) {
                         .clickable {
                             // Launch YouTube video when clicked
                             val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=${video.id.videoId}"))
+                            //command used to open another app screen such as a webpage , video
+                            //intent expresses an action to perform like open a webpage
                             context.startActivity(intent)
                         },
-                    elevation = CardDefaults.cardElevation(4.dp)
+                    elevation = CardDefaults.cardElevation(4.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color.White)
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         // Video title
@@ -86,7 +89,7 @@ fun LiveGamesScreen(viewModel: LiveGamesViewModel = viewModel()) {
                         // Video status (you can add an indicator for live or recorded if you want)
                         Text(
                             text = if (video.isLive) "🔴 Live Now" else "Recorded",
-                            color = if (video.isLive) MaterialTheme.colorScheme.secondary else Color.Gray
+                            color = if (video.isLive) MaterialTheme.colorScheme.secondary else Color.Black
                         )
 
                         // Video thumbnail

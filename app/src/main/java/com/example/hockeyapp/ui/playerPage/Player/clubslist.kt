@@ -1,4 +1,4 @@
-package com.example.hockeyapp.ui.playerPage.health
+package com.example.hockeyapp.ui.playerPage.Player
 
 import android.content.Intent
 import android.net.Uri
@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.sp
 import com.example.hockeyapp.R
 
 @Composable
-fun HealthFitness() {
+fun ClubPage() {
     val context = LocalContext.current
 
     Column(
@@ -46,7 +46,7 @@ fun HealthFitness() {
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "Health Section",
+                text = "Club Section",
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.White
@@ -54,42 +54,91 @@ fun HealthFitness() {
         }
 
         // Tabs with external links
-        HealthTab(
-            title = "Diet",
-            imageRes = R.drawable.diet_bg,
+        ClubTab(
+            title = "Wanderers",
+            imageRes = R.drawable.wanderers,
             onClick = {
-                val url = "https://www.usahockey.com/playernutrition"
+                val url = "https://namibiahockey.org/club-wanderers/"
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                 context.startActivity(intent)
             }
         )
 
-        HealthTab(
-            title = "Workouts",
-            imageRes = R.drawable.workout_bg,
+        ClubTab(
+            title = "Namibia Masters Hockey Club",
+            imageRes = R.drawable.masters,
             onClick = {
-                val url = "https://www.relentlesshockey.com/post/workouts-for-hockey-players"
+                val url = "https://namibiahockey.org/club-namibia-masters-hockey/"
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                 context.startActivity(intent)
             }
         )
 
-        HealthTab(
-            title = "Injury Recovery",
-            imageRes = R.drawable.injury_bg,
+        ClubTab(
+            title = "Saint Hockey Club",
+            imageRes = R.drawable.saint,
             onClick = {
-                val url = "https://athleteschoicemassage.ca/your-sport/hockey-muscle-injuries-treatment/"
+                val url = "https://namibiahockey.org/club-saints/"
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                 context.startActivity(intent)
             }
         )
 
 
-        HealthTab(
-            title = "Motivation",
-            imageRes = R.drawable.motivation,
+        ClubTab(
+            title = "The School of Excellence Hockey Club",
+            imageRes = R.drawable.excellency,
             onClick = {
-                val url = "https://quotes.lifehack.org/collections/inspirational-hockey-quotes"
+                val url = "https://namibiahockey.org/club-school-of-excellence/"
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                context.startActivity(intent)
+            }
+        )
+
+        ClubTab(
+            title = "DTS Hockey Club",
+            imageRes = R.drawable.dts,
+            onClick = {
+                val url = "https://namibiahockey.org/club-dts/"
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                context.startActivity(intent)
+            }
+        )
+
+        ClubTab(
+            title = "Team X",
+            imageRes = R.drawable.teamx,
+            onClick = {
+                val url = "https://namibiahockey.org/club-team-x/"
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                context.startActivity(intent)
+            }
+        )
+
+        ClubTab(
+            title = "Coastal Raiders Hockey Club",
+            imageRes = R.drawable.coastal,
+            onClick = {
+                val url = "https://namibiahockey.org/club-coastal-raiders/"
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                context.startActivity(intent)
+            }
+        )
+
+        ClubTab(
+            title = "Sparta Hockey Club",
+            imageRes = R.drawable.sparta,
+            onClick = {
+                val url = "https://namibiahockey.org/club-sparta/"
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                context.startActivity(intent)
+            }
+        )
+        ClubTab(
+            title = "Windhoek Old Boys",
+            imageRes = R.drawable.oldboys,
+            onClick = {
+                val url = "https://namibiahockey.org/club-old-boys/"
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                 context.startActivity(intent)
             }
@@ -98,7 +147,7 @@ fun HealthFitness() {
 }
 
 @Composable
-fun HealthTab(title: String, imageRes: Int, onClick: () -> Unit) {
+fun ClubTab(title: String, imageRes: Int, onClick: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -130,6 +179,6 @@ fun HealthTab(title: String, imageRes: Int, onClick: () -> Unit) {
 
 @Preview(showBackground = true)
 @Composable
-fun HealthFitnessPreview() {
-    HealthFitness()
+fun clubPreview() {
+    ClubPage()
 }

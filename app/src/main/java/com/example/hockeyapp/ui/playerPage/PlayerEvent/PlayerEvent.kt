@@ -34,14 +34,14 @@ fun EventPage(events: List<Event>){
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+
     ){
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 16.dp)
-                .background(MaterialTheme.colorScheme.primary, shape = RoundedCornerShape(8.dp))
-                .padding(16.dp)
+                .height(80.dp)
+                .background(MaterialTheme.colorScheme.primary),
+            contentAlignment = Alignment.Center
         ){
             Text(
                 text="Scheduled Events",

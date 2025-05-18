@@ -35,6 +35,7 @@ sealed class Route(val route: String) {
     object Coach: Route( "coach")
     object Team : Route ("team")
     object Player : Route("player")
+    object Club : Route("club")
 }
 
 
