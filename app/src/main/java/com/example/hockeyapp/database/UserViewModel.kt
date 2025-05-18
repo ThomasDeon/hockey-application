@@ -1,13 +1,17 @@
-package com.example.hockeyapp.viewModel
+package com.example.hockeyapp.database
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.hockeyapp.Repository
-import com.example.hockeyapp.database.User
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class UserViewModel(private val repository: Repository) : ViewModel() {
+@HiltViewModel
+class UserViewModel @Inject constructor(
+    private val repository: Repository
+) : ViewModel() {
 
     fun getUser() = repository.getAllUsers().asLiveData(viewModelScope.coroutineContext)
 
@@ -35,3 +39,4 @@ class UserViewModel(private val repository: Repository) : ViewModel() {
         }
     }
 }
+
