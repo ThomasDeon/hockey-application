@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Notifications
@@ -56,6 +57,7 @@ data class NavItem( val label: String,
 
 @Composable
 fun PlayerNavigation(modifier: Modifier= Modifier){
+
     val navController = rememberNavController()
     val eventList = listOf(
         Event("Team Meeting", "May 20, 2025", "Discuss the upcoming match."),
@@ -65,7 +67,7 @@ fun PlayerNavigation(modifier: Modifier= Modifier){
     val navItemList =  listOf(
         NavItem("Home", icon = Icons.Default.Home, route = Route.PlayerHome.route),
         NavItem("News", icon = Icons.Default.Info, route = Route.News.route),
-        NavItem("Events", icon = Icons.Default.Notifications, route =Route.Event.route),
+        NavItem("Events", icon = Icons.Default.CalendarToday, route =Route.Event.route),
         NavItem("Profile", Icons.Default.Person, route = Route.Profile.route),
 
     )
@@ -78,12 +80,10 @@ fun PlayerNavigation(modifier: Modifier= Modifier){
                     IconButton(
                         onClick = {
                             selectedRoute = item.route
+                            //this ensures only playerhomepage is shown when home is tapped
                             navController.navigate(item.route) {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
-                                }
+                                popUpTo(0) { inclusive = false }
                                 launchSingleTop = true
-                                restoreState = true
                             }
                         },
                         modifier = Modifier.weight(1f)
