@@ -129,8 +129,7 @@ fun BottomNavigation() {
             composable(Route.News.route) { NewsPage() }
             composable(Route.Profile.route) { ProfileScreen() }
             composable(Route.Setting.route) { SettingPage() }
-            composable(Route.RegisterTeam.route) { RegisterTeam() }
-            composable(Route.YouTubeVid.route) { LiveGamesScreen() }
+
             composable(
                 route = "webview_screen/{url}",
                 arguments = listOf(navArgument("url") { type = NavType.StringType })

@@ -30,6 +30,11 @@ sealed class Route(val route: String) {
     object PlayerHome: Route("playerHome")
     object PlayerRegister : Route("playerRegister")
     object healthFitness: Route("health")
+    object Event : Route("playerEvent")
+    object YouTubeVid : Route(" utubevid" )
+    object Coach: Route( "coach")
+    object Team : Route ("team")
+    object Player : Route("player")
 }
 
 
