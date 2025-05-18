@@ -1,34 +1,25 @@
 package com.example.hockeyapp.ui.playerPage.Nav
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavController
-import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -48,7 +39,7 @@ import com.example.hockeyapp.ui.playerPage.Team.TeamRegistrationScreen
 import com.example.hockeyapp.ui.playerPage.health.HealthFitness
 import com.example.hockeyapp.ui.playerPage.health.WebArticleScreen
 import com.example.hockeyapp.ui.playerPage.registration.RegisterPlayerScreen
-import com.example.hockeyapp.ui.profile.AdminScreen
+import com.example.hockeyapp.ui.AdminPage.AdminScreen
 import com.example.hockeyapp.ui.settings.SettingPage
 
 
@@ -109,7 +100,7 @@ fun PlayerNavigation(modifier: Modifier= Modifier){
             composable(Route.PlayerHome.route) { PlayerHomepage(navController) }
             composable(Route.healthFitness.route) { HealthFitness() }
             composable(Route.News.route) { NewsPage() }
-            composable(Route.Profile.route) { AdminScreen() }
+            //composable(Route.Profile.route) { AdminScreen(authViewModel = au) }
             composable(Route.Event.route){EventPage(events = eventList)}
             composable(Route.Setting.route) { SettingPage() }
             composable(Route.PlayerRegister.route) { RegisterPlayerScreen(navController) }

@@ -1,4 +1,4 @@
-package com.example.hockeyapp.ui.profile
+package com.example.hockeyapp.ui.AdminPage
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
@@ -36,25 +36,31 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import com.example.hockeyapp.authViewModel.AuthViewModel
 import com.example.hockeyapp.ui.components.AdminHeaderSection
-import com.example.hockeyapp.ui.components.LoginText
 import com.example.hockeyapp.ui.components.LoginTextField
 import com.example.hockeyapp.ui.defaultPadding
 import com.example.hockeyapp.ui.itemSpacing
 
 
 @Composable
-fun AdminScreen() {
+fun AdminScreen(
+    authViewModel: AuthViewModel,
+    onRegisterSuccessfully: () -> Unit
+) {
     Column(modifier = Modifier.fillMaxSize()) {
         AdminHeaderSection()
         Spacer(modifier = Modifier.height(60.dp))
-        AdminFields()
+        AdminFields(
+            authViewModel,
+            onRegisterSuccessfully
+        )
     }
 }
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun AdminFields() {
+fun AdminFields(authViewModel: AuthViewModel, onRegisterSuccessfully: () -> Unit) {
     val (firstName, onFirstNameChange) = rememberSaveable { mutableStateOf("") }
     val (lastName, onLastNameChange) = rememberSaveable { mutableStateOf("") }
     val (email, onEmailChange) = rememberSaveable { mutableStateOf("") }
@@ -204,17 +210,37 @@ fun AdminFields() {
         Button(
             onClick = {
                 if (!isFieldsNotEmpty) {
-                    Toast.makeText(context, "Please fill all fields", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Please fill in all fields", Toast.LENGTH_SHORT).show()
                 } else if (!isPasswordSame) {
                     Toast.makeText(context, "Passwords do not match", Toast.LENGTH_SHORT).show()
+                } else if (phoneNumber.toIntOrNull() == null) {
+                    Toast.makeText(context, "Enter a valid phone number", Toast.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(context, "Registration successful", Toast.LENGTH_SHORT).show()
-                    // Add your sign-up logic here
+                    authViewModel.AdminRegistration(
+                        firstName,
+                        lastName,
+                        email,
+                        phoneNumber.toInt(),
+                        gender,
+                        password,
+                        confirmPassword
+                    ) { success, errorMessage ->
+                        if (success) {
+                            Toast.makeText(
+                                context,
+                                "Admin registered successfully",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            onRegisterSuccessfully()
+                        } else {
+                            Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+                        }
+                    }
                 }
             },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text = "Register Admin", color = Color.White)
+            Text("Register Admin", color = Color.White)
         }
     }
 }

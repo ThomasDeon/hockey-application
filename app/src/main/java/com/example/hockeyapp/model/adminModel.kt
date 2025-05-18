@@ -1,4 +1,10 @@
 package com.example.hockeyapp.model;
 
-public class AdminViewModel {
-}
+data class AdminModel (
+    val firstName: String = "",
+    val lastName: String = "",
+    val email: String = "",
+    val phoneNumber: Int,
+    val gender: String ="",
+    val AdminID: String = ""
+)
