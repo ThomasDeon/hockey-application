@@ -47,7 +47,7 @@ import com.example.hockeyapp.ui.playerPage.Team.TeamRegistrationScreen
 import com.example.hockeyapp.ui.playerPage.health.HealthFitness
 import com.example.hockeyapp.ui.playerPage.health.WebArticleScreen
 import com.example.hockeyapp.ui.playerPage.registration.RegisterPlayerScreen
-import com.example.hockeyapp.ui.profile.ProfileScreen
+import com.example.hockeyapp.ui.profile.AdminScreen
 import com.example.hockeyapp.ui.settings.SettingPage
 
 
@@ -108,7 +108,7 @@ fun PlayerNavigation(modifier: Modifier= Modifier){
             composable(Route.PlayerHome.route) { PlayerHomepage(navController) }
             composable(Route.healthFitness.route) { HealthFitness() }
             composable(Route.News.route) { NewsPage() }
-            composable(Route.Profile.route) { ProfileScreen() }
+            composable(Route.Profile.route) { AdminScreen() }
             composable(Route.Event.route){EventPage(events = eventList)}
             composable(Route.Setting.route) { SettingPage() }
             composable(Route.PlayerRegister.route) { RegisterPlayerScreen(navController) }

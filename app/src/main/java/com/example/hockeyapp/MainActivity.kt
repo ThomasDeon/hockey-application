@@ -10,6 +10,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.compose.rememberNavController
 import com.example.hockeyapp.ui.login.LoginScreen
 import com.example.hockeyapp.ui.signup.SignUpScreen
@@ -24,7 +25,7 @@ class MainActivity : ComponentActivity() {
             HockeyAppTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    color = Color.White
                 ) {
                     val navController = rememberNavController()
                     MyNavigation(navController)
