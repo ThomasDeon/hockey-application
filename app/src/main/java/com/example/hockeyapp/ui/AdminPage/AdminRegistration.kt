@@ -13,8 +13,10 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ExposedDropdownMenuDefaults
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -112,7 +114,7 @@ fun AdminFields() {
             value = email,
             onValueChange = onEmailChange,
             labelText = "Email",
-            leadingIcon = Icons.Default.Person,
+            leadingIcon = Icons.Default.Email,
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -122,7 +124,7 @@ fun AdminFields() {
             value = phoneNumber,
             onValueChange = onPhoneNumberChange,
             labelText = "Phone Number",
-            leadingIcon = Icons.Default.Person,
+            leadingIcon = Icons.Default.Phone,
             modifier = Modifier.fillMaxWidth(),
             keyboardType = KeyboardType.Number
         )
