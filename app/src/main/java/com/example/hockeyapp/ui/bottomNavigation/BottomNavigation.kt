@@ -35,7 +35,7 @@ import com.example.hockeyapp.ui.newsPages.NewsPage
 import com.example.hockeyapp.ui.playerPage.health.HealthFitness
 import com.example.hockeyapp.ui.playerPage.health.WebArticleScreen
 import com.example.hockeyapp.ui.AdminPage.AdminScreen
-import com.example.hockeyapp.ui.settings.SettingPage
+import com  .example.hockeyapp.ui.settings.SettingPage
 
 
 

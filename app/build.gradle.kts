@@ -98,6 +98,7 @@ dependencies {
     // Lottie
     implementation("com.airbnb.android:lottie-compose:6.3.0")
 
+<<<<<<< HEAD
     implementation("androidx.compose.material:material-icons-extended:<version>")
 
     // Room
@@ -116,3 +117,15 @@ dependencies {
 
 
 
+=======
+    implementation ("androidx.compose.material:material-icons-extended:<version>")
+
+    //room
+    val room_version = "2.7.1"
+    annotationProcessor("androidx.room:room-compiler:$room_version")
+
+    // optional - Kotlin Extensions and Coroutines support for Room
+    implementation("androidx.room:room-ktx:$room_version")
+
+}
+>>>>>>> b2a3e8e (users can now sign as users or admins)

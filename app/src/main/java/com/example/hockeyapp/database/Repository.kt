@@ -1,5 +1,8 @@
 package com.example.hockeyapp
 
+import com.example.hockeyapp.database.Coach
+import com.example.hockeyapp.database.Team
+import com.example.hockeyapp.database.User
 import kotlinx.coroutines.flow.Flow
 
 class Repository(private val db: AppDatabase) {

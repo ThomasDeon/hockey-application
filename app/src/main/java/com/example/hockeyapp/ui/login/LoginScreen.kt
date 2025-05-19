@@ -44,7 +44,7 @@ val defaultPadding = 16.dp
 val itemSpacing = 8.dp
 
 @Composable
-fun LoginScreen(onLoginSuccess:() -> Unit, onSignUpClick: () -> Unit, authViewModel: AuthViewModel = viewModel()) {
+fun LoginScreen(onLoginSuccess:(String) -> Unit, onSignUpClick: () -> Unit, authViewModel: AuthViewModel = viewModel()) {
     val (email, setEmail) = rememberSaveable {
         mutableStateOf("")
     }
@@ -113,20 +113,18 @@ fun LoginScreen(onLoginSuccess:() -> Unit, onSignUpClick: () -> Unit, authViewMo
         Spacer(Modifier.height(itemSpacing))
 
         Button(onClick = {
-            authViewModel.login (
-                email, password
-            ){success, errorMessage ->
-                if(success) {
+            authViewModel.login(email, password) { success, errorMessage, userType ->
+                if (success) {
                     Toast.makeText(context, "Login successful", Toast.LENGTH_SHORT).show()
-                    onLoginSuccess()
+                    onLoginSuccess(userType.toString())
                 } else {
                     Toast.makeText(context, errorMessage ?: "Unknown error", Toast.LENGTH_SHORT).show()
                 }
             }
-        }
-            ) {
+        }) {
             Text(text = "Login")
         }
+
         AlternativeLoginOptions(
             onIconClick = {
                 index ->

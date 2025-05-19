@@ -12,16 +12,41 @@ class AuthViewModel : ViewModel() {
     private val fireStore = Firebase.firestore
 
 
-    fun login(email: String, password: String, onResult: (Boolean, String?) -> Unit) {
+    fun login(email: String, password: String, onResult: (Boolean, String?, String?) -> Unit) {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    onResult(true, null)
+                    val userId = auth.currentUser?.uid ?: return@addOnCompleteListener
+
+                    // Check if user is an Admin
+                    fireStore.collection("Admin").document(userId).get()
+                        .addOnSuccessListener { document ->
+                            if (document.exists()) {
+                                onResult(true, null, "admin")
+                            } else {
+                                // Check if user is a regular User
+                                fireStore.collection("User").document(userId).get()
+                                    .addOnSuccessListener { userDoc ->
+                                        if (userDoc.exists()) {
+                                            onResult(true, null, "user")
+                                        } else {
+                                            onResult(false, "User role not found", null)
+                                        }
+                                    }
+                                    .addOnFailureListener { e ->
+                                        onResult(false, e.localizedMessage, null)
+                                    }
+                            }
+                        }
+                        .addOnFailureListener { e ->
+                            onResult(false, e.localizedMessage, null)
+                        }
                 } else {
-                    onResult(false, task.exception?.localizedMessage ?: "Login failed")
+                    onResult(false, task.exception?.localizedMessage ?: "Login failed", null)
                 }
             }
     }
+
 
     fun AdminRegistration(
         firstname: String,
