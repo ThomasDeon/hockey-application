@@ -3,8 +3,6 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.google.gms.google.services)
-    kotlin("kapt") // For annotation processing (Room + Hilt)
-    id("dagger.hilt.android.plugin") //  Add Hilt plugin here
 }
 
 android {
@@ -40,9 +38,11 @@ android {
     buildFeatures {
         compose = true
     }
+
 }
 
 dependencies {
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -61,63 +61,42 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    //navigation
+    implementation ("androidx.navigation:navigation-compose:2.8.9")
 
-    // Navigation
-    implementation("androidx.navigation:navigation-compose:2.9.0")
+//    newsAPI
+    implementation ("com.github.KwabenBerko:News-API-Java:1.0.2")
+    implementation ("androidx.compose.runtime:runtime-livedata:1.6.1")
+    implementation("io.coil-kt.coil3:coil-compose:3.2.0")
+    implementation("io.coil-kt.coil3:coil-network-okhttp:3.2.0")
 
-    // News API
-    implementation("com.github.KwabenBerko:News-API-Java:1.0.2")
 
-    implementation("androidx.compose.runtime:runtime-livedata:1.8.1")
+// Coroutines
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
-    // Coil
-    implementation("io.coil-kt.coil3:coil-compose:3.1.0")
-
-    // Coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
-
-    // Jetpack Compose UI
-    implementation("androidx.compose.ui:ui:1.5.0")
-    implementation("androidx.compose.material:material:1.5.0")
-    implementation("androidx.compose.ui:ui-tooling-preview:1.5.0")
-
-    // Lifecycle
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
-    implementation("androidx.activity:activity-compose:1.7.2")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
+    implementation ("androidx.compose.ui:ui:1.5.0")
+    implementation ("androidx.compose.material:material:1.5.0")
+    implementation ("androidx.compose.ui:ui-tooling-preview:1.5.0")
+    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
+    implementation ("androidx.activity:activity-compose:1.7.2")
+    // ViewModel and Lifecycle
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
 
     // Retrofit & Gson
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+    // Jetpack Compose dependencies
+    implementation("androidx.compose.runtime:runtime:1.5.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
 
-    // Coil (again, different version)
+// Kotlin Coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
     implementation("io.coil-kt:coil-compose:2.2.2")
-
-    // Lottie
     implementation("com.airbnb.android:lottie-compose:6.3.0")
 
-<<<<<<< HEAD
-    implementation("androidx.compose.material:material-icons-extended:<version>")
-
-    // Room
-    implementation("androidx.room:room-runtime:2.6.1")
-    kapt("androidx.room:room-compiler:2.6.1")
-    implementation("androidx.room:room-ktx:2.6.1")
-
-    //  Hilt
-    implementation("com.google.dagger:hilt-android:2.48")
-    kapt("com.google.dagger:hilt-compiler:2.48")
-
-    //  Hilt with ViewModel (Compose)
-    implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
-    kapt("androidx.hilt:hilt-compiler:1.1.0")
-}
-
-
-
-=======
     implementation ("androidx.compose.material:material-icons-extended:<version>")
 
     //room
@@ -127,5 +106,6 @@ dependencies {
     // optional - Kotlin Extensions and Coroutines support for Room
     implementation("androidx.room:room-ktx:$room_version")
 
+    implementation ("com.google.dagger:hilt-android:2.50")
+
 }
->>>>>>> b2a3e8e (users can now sign as users or admins)
