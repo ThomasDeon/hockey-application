@@ -2,21 +2,18 @@ package com.example.hockeyapp
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.example.hockeyapp.authViewModel.AuthViewModel
-import com.example.hockeyapp.ui.bottomNavigation.BottomNavigation
+import com.example.hockeyapp.ui.bottomNavigation.MainScreen
 import com.example.hockeyapp.ui.login.LoginScreen
 import com.example.hockeyapp.ui.playerPage.Nav.PlayerNavigation
 import com.example.hockeyapp.ui.signup.PolicyScreen
 import com.example.hockeyapp.ui.signup.PrivacyScreen
 import com.example.hockeyapp.ui.signup.SignUpScreen
-
 
 
 sealed class Route(val route: String) {
@@ -127,7 +124,7 @@ fun MyNavigation(
         }
 
         composable(route = Route.Home.route) {
-            BottomNavigation()
+            MainScreen()
         }
 
         composable(route = Route.PlayerHome.route) {
