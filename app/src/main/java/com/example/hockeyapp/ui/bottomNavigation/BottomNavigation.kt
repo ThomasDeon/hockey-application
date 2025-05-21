@@ -1,27 +1,23 @@
 package com.example.hockeyapp.ui.bottomNavigation
 
-import android.widget.Toast
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.People
 import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -33,18 +29,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.hockeyapp.Route
+import com.example.hockeyapp.authViewModel.AuthViewModel
+import com.example.hockeyapp.ui.AdminPage.AdminScreen
 import com.example.hockeyapp.ui.HomeScreen
-import com.example.hockeyapp.ui.RegisterTeam.RegisterTeam
+import com.example.hockeyapp.ui.announcement.AnnouncementPage
 import com.example.hockeyapp.ui.newsPages.NewsPage
-import com.example.hockeyapp.ui.playerPage.LiveScores.LiveGamesScreen
-import com.example.hockeyapp.ui.playerPage.PlayerEvent.EventPage
-import com.example.hockeyapp.ui.playerPage.PlayerHomepage
 import com.example.hockeyapp.ui.playerPage.health.HealthFitness
 import com.example.hockeyapp.ui.playerPage.health.WebArticleScreen
-import com.example.hockeyapp.ui.playerPage.registration.RegisterPlayerScreen
-import com.example.hockeyapp.ui.profile.AdminScreen
-import com.example.hockeyapp.ui.settings.SettingPage
-
 
 
 data class BottomNavItem(
@@ -57,13 +48,15 @@ data class BottomNavItem(
 fun BottomNavigation() {
     val navController = rememberNavController()
     val context = LocalContext.current
+    val authViewModel: AuthViewModel = AuthViewModel()
 
     val items = listOf(
-        BottomNavItem("Home", icon = Icons.Default.Home, route = Route.PlayerHome.route),
-        BottomNavItem("News", icon = Icons.Default.PlayArrow, route = Route.News.route),
-        BottomNavItem("Profile", icon = Icons.Default.Person, route = Route.Profile.route),
-        BottomNavItem("Settings", icon = Icons.Default.DateRange, route = Route.Setting.route),
-        // BottomNavItem("RegisterTeam", icon = Icons.Default.Person, route = Route.RegisterTeam.route)
+            BottomNavItem("Home", icon = Icons.Default.Home, route = Route.Home.route),
+            BottomNavItem("News", icon = Icons.Default.PlayArrow, route = Route.News.route),
+            BottomNavItem("Announcement", icon = Icons.Default.DateRange, route = Route.Setting.route),
+            BottomNavItem("Register", icon = Icons.Default.People, route = Route.Profile.route)
+
+    // BottomNavItem("RegisterTeam", icon = Icons.Default.Person, route = Route.RegisterTeam.route)
     )
 
 
@@ -72,9 +65,12 @@ fun BottomNavigation() {
 
     Scaffold(
         bottomBar = {
-            BottomAppBar() {
+            NavigationBar(
+                containerColor = Color.DarkGray
+            ) {
                 items.forEach { item ->
-                    IconButton(
+                    NavigationBarItem(
+                        selected = selectedRoute == item.route,
                         onClick = {
                             selectedRoute = item.route
                             navController.navigate(item.route) {
@@ -85,40 +81,29 @@ fun BottomNavigation() {
                                 restoreState = true
                             }
                         },
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        Icon(
-                            imageVector = item.icon,
-                            contentDescription = item.label,
-                            modifier = Modifier.size(26.dp),
-                            tint = if (selectedRoute == item.route) Color.White else Color.DarkGray
-                        )
-                    }
-                }
-
-                Box(
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(8.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    FloatingActionButton(
-                        onClick = {
-                            selectedRoute = Route.RegisterTeam.route
-                            navController.navigate(Route.RegisterTeam.route) {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
-                                }
-                            }
+                        icon = {
+                            Icon(
+                                imageVector = item.icon,
+                                contentDescription = item.label,
+                                modifier = Modifier.size(24.dp)
+                            )
                         },
-                        containerColor = Color.White
-                    ) {
-                        Icon(Icons.Default.Add, contentDescription = "Add")
-                    }
+                        label = {
+                            Text(text = item.label)
+                        },
+                        alwaysShowLabel = true,
+                        colors = NavigationBarItemDefaults.colors(
+                            selectedIconColor = Color.White,
+                            unselectedIconColor = Color.Gray,
+                            selectedTextColor = Color.White,
+                            unselectedTextColor = Color.Gray
+                        )
+                    )
                 }
             }
         }
-    ) { paddingValues ->
+    ) {
+    paddingValues ->
         NavHost(
             navController = navController,
             startDestination = Route.Home.route,
@@ -127,8 +112,12 @@ fun BottomNavigation() {
             composable(Route.Home.route) { HomeScreen() }
             composable(Route.healthFitness.route) { HealthFitness() }
             composable(Route.News.route) { NewsPage() }
-            composable(Route.Profile.route) { AdminScreen() }
-            composable(Route.Setting.route) { SettingPage() }
+            composable(Route.Profile.route) { AdminScreen(authViewModel = authViewModel,
+                onRegisterSuccessfully = {
+                    navController.navigate(Route.Home.route)
+                }
+                ) }
+            composable(Route.Setting.route) { AnnouncementPage() }
 
             composable(
                 route = "webview_screen/{url}",

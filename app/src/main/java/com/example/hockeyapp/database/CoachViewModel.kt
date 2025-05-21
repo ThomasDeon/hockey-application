@@ -1,13 +1,17 @@
-package com.example.hockeyapp.viewModel
+package com.example.hockeyapp.database
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.hockeyapp.Repository
-import com.example.hockeyapp.database.Coach
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class CoachViewModel(private val repository: Repository) : ViewModel() {
+@HiltViewModel
+class CoachViewModel @Inject constructor(
+    private val repository: Repository
+) : ViewModel() {
 
     fun getAllCoaches() = repository.getAllCoaches().asLiveData(viewModelScope.coroutineContext)
 

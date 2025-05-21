@@ -21,7 +21,8 @@ fun LoginTextField(
     labelText: String,
     leadingIcon: ImageVector? = null,
     keyboardType: KeyboardType = KeyboardType.Text,
-    visualTransformation: VisualTransformation = VisualTransformation.None
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    enabled: Boolean = true
 ) {
     OutlinedTextField(
         modifier = modifier,
@@ -33,7 +34,8 @@ fun LoginTextField(
         },
         keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
         visualTransformation = visualTransformation,
-        shape = RoundedCornerShape(percent = 30)
+        shape = RoundedCornerShape(percent = 30),
+        enabled = enabled
     )
 }
 

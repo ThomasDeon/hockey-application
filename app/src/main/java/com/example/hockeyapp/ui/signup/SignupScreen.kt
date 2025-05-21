@@ -217,7 +217,7 @@ fun SignUpScreen(
 
         Button(
             onClick = {
-                authViewModel.PlayerSignUp(
+                authViewModel.UserSignUp(
                     firstName,
                     lastName,
                     teamName,

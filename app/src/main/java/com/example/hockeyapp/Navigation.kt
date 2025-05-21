@@ -1,6 +1,7 @@
 package com.example.hockeyapp
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -11,6 +12,7 @@ import androidx.navigation.navigation
 import com.example.hockeyapp.authViewModel.AuthViewModel
 import com.example.hockeyapp.ui.bottomNavigation.BottomNavigation
 import com.example.hockeyapp.ui.login.LoginScreen
+import com.example.hockeyapp.ui.playerPage.Nav.PlayerNavigation
 import com.example.hockeyapp.ui.signup.PolicyScreen
 import com.example.hockeyapp.ui.signup.PrivacyScreen
 import com.example.hockeyapp.ui.signup.SignUpScreen
@@ -54,10 +56,17 @@ fun MyNavigation(
 
             composable(route = Route.Login.route) {
                 LoginScreen(
-                    onLoginSuccess = {
-                        navHostController.navigate(Route.PlayerHome.route) {
-                            popUpTo("Login_flow") {inclusive = true}
-                            launchSingleTop = true
+                    onLoginSuccess = { userType ->
+                        if (userType == "admin") {
+                            navHostController.navigate(Route.Home.route) {
+                                popUpTo("Login_flow") {inclusive = true}
+                                launchSingleTop = true
+                            }
+                        } else if (userType == "user") {
+                            navHostController.navigate(Route.PlayerHome.route) {
+                                popUpTo("Login_flow") {inclusive = true}
+                                launchSingleTop = true
+                            }
                         }
                     },
                     onSignUpClick = {
@@ -117,13 +126,12 @@ fun MyNavigation(
             }
         }
 
-        composable(route = Route.PlayerHome.route) {
+        composable(route = Route.Home.route) {
             BottomNavigation()
-
-
         }
 
-
+        composable(route = Route.PlayerHome.route) {
+            PlayerNavigation(modifier= Modifier)}
     }
 }
 
