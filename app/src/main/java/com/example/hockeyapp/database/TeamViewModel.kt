@@ -32,19 +32,4 @@ class TeamViewModel @Inject constructor(
             repository.deleteTeam(team)
         }
     }
-
-    fun insertTeamWithCheck(team: Team, onResult: (Boolean,String) -> Unit){
-        viewModelScope.launch{
-            if (repository.clubNameExists(team.clubName)){
-                onResult(false, "Club already exists")
-
-            }
-            else{
-                repository.saveTeam(team)
-                onResult(true,"Registration Submitted")
-            }
-        }
-    }
-
-    companion object
 }

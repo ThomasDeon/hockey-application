@@ -61,8 +61,4 @@ class Repository(private val db: AppDatabase) {
     fun getAllTeams(): Flow<List<Team>> {
         return db.teamDao().getAllTeams()
     }
-
-    suspend fun clubNameExists(clubName: String): Boolean{
-        return db.teamDao().countTeamsByClubName(clubName) >0
-    }
 }
