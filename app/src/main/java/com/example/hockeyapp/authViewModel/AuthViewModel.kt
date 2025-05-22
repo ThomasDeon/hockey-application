@@ -2,6 +2,7 @@ package com.example.hockeyapp.authViewModel
 
 import androidx.lifecycle.ViewModel
 import com.example.hockeyapp.model.AdminModel
+import com.example.hockeyapp.model.AnnouncementModel
 import com.example.hockeyapp.model.CoachregModel
 import com.example.hockeyapp.model.TeamregModel
 import com.example.hockeyapp.model.UserModel
@@ -156,34 +157,76 @@ class AuthViewModel : ViewModel() {
 
 
     fun Coachreg(
-        firstName: String ,
-         lastName: String ,
-         contact: String ,
-         email: String ,
-         region:String,
-         city:String ,
-         club: String ,
-         years: String ,
-         coachId: String ,
-
-                onResult: (Boolean, String) -> Unit
+        firstName: String,
+        lastName: String,
+        contact: String,
+        email: String,
+        region: String,
+        city: String,
+        club: String,
+        years: String,
+        onResult: (Boolean, String) -> Unit
     ) {
-        auth.createUserWithEmailAndPassword(email, contact).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val coachId = task.result?.user?.uid ?: return@addOnCompleteListener
-                val coachModel = CoachregModel(firstName,lastName,contact,region,city,club,years,coachId)
 
-                fireStore.collection("Coach").document(coachId).set(coachModel)
-                    .addOnCompleteListener { dbTask ->
-                        if (dbTask.isSuccessful) {
-                            onResult(true, "Registered Successfully")
-                        } else {
-                            onResult(false, "Failed to Register Coach")
-                        }
-                    }
-            } else {
-                onResult(false, task.exception?.localizedMessage ?: "Account creation failed")
-            }
+        val coachId = fireStore.collection("Team").document().id
+
+        // Validate inputs
+        if (firstName.isBlank() || lastName.isBlank() || contact.isBlank() || email.isBlank()
+            || region.isBlank() || city.isBlank() || club.isBlank() || years.isBlank()) {
+            onResult(false, "Please fill in all fields")
+            return
         }
+
+        // Create coach model
+        val coachModel = CoachregModel(
+            firstName = firstName,
+            lastName = lastName,
+            contact = contact,
+            region = region,
+            city = city,
+            club = club,
+            years = years,
+            coachId = coachId
+        )
+
+        // Save to Firestore (no Auth)
+        fireStore.collection("Coach").document(coachId).set(coachModel)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    onResult(true, "Coach registered successfully")
+                } else {
+                    onResult(false, "Failed to register coach")
+                }
+            }
     }
+
+    fun submitAnnouncement(
+        title: String,
+        description: String,
+        date: String,
+        time: String,
+        onResult: (Boolean, String) -> Unit
+    ) {
+        val announcementId = fireStore.collection("Announcements").document().id
+
+        val announcement = AnnouncementModel(
+            title = title,
+            description = description,
+            date = date,
+            time = time,
+            announcementId = announcementId
+        )
+
+        fireStore.collection("Announcements").document(announcementId)
+            .set(announcement)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    onResult(true, "Announcement submitted successfully")
+                } else {
+                    onResult(false, "Failed to submit announcement")
+                }
+            }
+    }
+
 }
+
