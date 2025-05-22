@@ -39,7 +39,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.hockeyapp.R
+import com.example.hockeyapp.authViewModel.AuthViewModel
 
 
 
@@ -74,7 +76,7 @@ fun ExpandableText() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-    fun TeamRegistrationScreen() {
+    fun TeamRegistrationScreen(authViewModel: AuthViewModel= viewModel()) {
     val context = LocalContext.current
     val scrollState = rememberScrollState()
         val clubName = remember { mutableStateOf("") }
@@ -166,24 +168,23 @@ fun ExpandableText() {
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Button(onClick = {
-                    if (clubName.value.isBlank() ||
-                        contactPerson.value.isBlank() ||
-                        contactCell.value.isBlank() ||
-                        email.value.isBlank() ||
-                        umpireName.value.isBlank() ||
-                        umpireContact.value.isBlank() ||
-                        umpireEmail.value.isBlank() ||
-                        techOfficialName.value.isBlank() ||
-                        techOfficialContact.value.isBlank() ||
-                        techOfficialEmail.value.isBlank() ||
-                        leagueInfo.value.isBlank() ||
-                        !disclaimerChecked.value
-                    ){
-                        Toast.makeText(context, "Please enter all fields", Toast.LENGTH_SHORT)
-                            .show()
-                    } else {
-                        Toast.makeText(context, "Registration Submitted", Toast.LENGTH_SHORT).show()
-
+                    authViewModel.Teamreg(
+                        clubName = clubName.value,
+                        contactPerson = contactPerson.value,
+                        contactCell = contactCell.value,
+                        email = email.value,
+                        umpireName = umpireName.value,
+                        umpireContact = umpireContact.value,
+                        umpireEmail = umpireEmail.value,
+                        techOfficialName = techOfficialName.value,
+                        techOfficialContact = techOfficialContact.value,
+                        techOfficialEmail = techOfficialEmail.value,
+                    ){success, errorMessage ->
+                        if (success) {
+                            Toast.makeText(context, "Team registered successfully",Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+                        }
                     }
                 },
                     modifier = Modifier
