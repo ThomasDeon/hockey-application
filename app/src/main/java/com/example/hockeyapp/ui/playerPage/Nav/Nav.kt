@@ -107,7 +107,7 @@ fun PlayerNavigation(modifier: Modifier= Modifier){
             composable(Route.Coach.route) { CoachRegistrationScreen() }
             composable(Route.Club.route) { ClubPage() }
             composable(Route.Player.route) { PlayerRegistrationScreen(navController) }
-            composable(Route.Team.route) { TeamRegistrationScreen() }
+            composable(Route.Team.route) { TeamRegistrationScreen(navController) }
             composable(
                 route = "webview_screen/{url}",
                 arguments = listOf(navArgument("url") { type = NavType.StringType })
@@ -115,7 +115,6 @@ fun PlayerNavigation(modifier: Modifier= Modifier){
                 val url = backStackEntry.arguments?.getString("url") ?: ""
                 WebArticleScreen(url = url)
             }
-
         }
     }
 }

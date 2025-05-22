@@ -194,10 +194,7 @@ import androidx.compose.runtime.livedata.observeAsState
                             Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
                             if (success) {
                                 clearAllFields()
-                                navController.navigate("team_home") {
-                                    popUpTo("team_registration") { inclusive = true }
-                                    launchSingleTop = true
-                                }
+                                navController.navigate(Route.PlayerRegister.route)
                             }
                         }
 
