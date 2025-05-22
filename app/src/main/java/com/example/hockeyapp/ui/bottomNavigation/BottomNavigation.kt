@@ -4,7 +4,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material.Scaffold
+import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Home
@@ -74,85 +76,100 @@ fun MainScreen() {
             ) {
 
                 DrawerBody(
-                    items = listOf(
-                        MenuItem("home", "Home", "Go to home screen", Icons.Default.Home),
-                        MenuItem("settings", "Settings", "Go to settings screen", Icons.Default.DateRange),
-                        MenuItem("profile", "Profile", "Go to profile screen", Icons.Default.People)
-                    ),
-                    onItemClick = {
+                    items = bottomNavItems.map {
+                        MenuItem(
+                            id = it.route,
+                            title = it.label,
+                            contentDescription = "Navigate to ${it.label}",
+                            icon = it.icon
+                        )
+                    },
+                    onItemClick = { menuItem ->
+                        selectedBottomItem = menuItem.id
                         scope.launch { drawerState.close() }
-                        // Add navigation if needed
+                        navController.navigate(menuItem.id) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
                     }
                 )
+
             }
         }
     ) {
-        Scaffold(
-            topBar = {
-                AppBar(
-                    noNavigationIconClick = {
-                        scope.launch { drawerState.open() }
-                    }
-                )
-            },
-            bottomBar = {
-                NavigationBar(containerColor = Color.DarkGray) {
-                    bottomNavItems.forEach { item ->
-                        NavigationBarItem(
-                            selected = selectedBottomItem == item.route,
-                            onClick = {
-                                selectedBottomItem = item.route
-                                navController.navigate(item.route) {
-                                    popUpTo(navController.graph.findStartDestination().id) {
-                                        saveState = true
-                                    }
-                                    launchSingleTop = true
-                                    restoreState = true
-                                }
-                            },
-                            icon = {
-                                Icon(
-                                    imageVector = item.icon,
-                                    contentDescription = item.label,
-                                    modifier = Modifier.size(24.dp)
-                                )
-                            },
-                            label = { Text(item.label) },
-                            alwaysShowLabel = true,
-                            colors = NavigationBarItemDefaults.colors(
-                                selectedIconColor = Color.White,
-                                unselectedIconColor = Color.Gray,
-                                selectedTextColor = Color.White,
-                                unselectedTextColor = Color.Gray
-                            )
-                        )
-                    }
-                }
-            }
-        ) { padding ->
-            NavHost(
-                navController = navController,
-                startDestination = Route.Home.route,
-                modifier = Modifier.padding(padding)
-            ) {
-                composable(Route.Home.route) { HomeScreen() }
-                composable(Route.News.route) { NewsPage() }
-                composable(Route.Setting.route) { AnnouncementPage() }
-                composable(Route.Profile.route) {
-                    AdminScreen(
-                        authViewModel = authViewModel,
-                        onRegisterSuccessfully = {
-                            navController.navigate(Route.Home.route)
+        Surface(
+            color = MaterialTheme.colorScheme.background
+        ) {
+            Scaffold(
+                topBar = {
+                    AppBar(
+                        noNavigationIconClick = {
+                            scope.launch { drawerState.open() }
                         }
                     )
+                },
+                bottomBar = {
+                    NavigationBar(containerColor = Color.DarkGray) {
+                        bottomNavItems.forEach { item ->
+                            NavigationBarItem(
+                                selected = selectedBottomItem == item.route,
+                                onClick = {
+                                    selectedBottomItem = item.route
+                                    navController.navigate(item.route) {
+                                        popUpTo(navController.graph.findStartDestination().id) {
+                                            saveState = true
+                                        }
+                                        launchSingleTop = true
+                                        restoreState = true
+                                    }
+                                },
+                                icon = {
+                                    Icon(
+                                        imageVector = item.icon,
+                                        contentDescription = item.label,
+                                        modifier = Modifier.size(24.dp)
+                                    )
+                                },
+                                label = { Text(item.label) },
+                                alwaysShowLabel = true,
+                                colors = NavigationBarItemDefaults.colors(
+                                    selectedIconColor = Color.White,
+                                    unselectedIconColor = Color.Gray,
+                                    selectedTextColor = Color.White,
+                                    unselectedTextColor = Color.Gray
+                                )
+                            )
+                        }
+                    }
                 }
-                composable(Route.healthFitness.route) { HealthFitness() }
-                composable(
-                    route = "webview_screen/{url}",
-                    arguments = listOf(navArgument("url") { type = NavType.StringType })
-                ) { backStackEntry ->
-                    val url = backStackEntry.arguments?.getString("url") ?: ""
-                    WebArticleScreen(url = url)
+            ) { padding ->
+                NavHost(
+                    navController = navController,
+                    startDestination = Route.Home.route,
+                    modifier = Modifier.padding(padding)
+                ) {
+                    composable(Route.Home.route) { HomeScreen() }
+                    composable(Route.News.route) { NewsPage() }
+                    composable(Route.Setting.route) { AnnouncementPage() }
+                    composable(Route.Profile.route) {
+                        AdminScreen(
+                            authViewModel = authViewModel,
+                            onRegisterSuccessfully = {
+                                navController.navigate(Route.Home.route)
+                            }
+                        )
+                    }
+                    composable(Route.healthFitness.route) { HealthFitness() }
+                    composable(
+                        route = "webview_screen/{url}",
+                        arguments = listOf(navArgument("url") { type = NavType.StringType })
+                    ) { backStackEntry ->
+                        val url = backStackEntry.arguments?.getString("url") ?: ""
+                        WebArticleScreen(url = url)
+                    }
                 }
             }
         }

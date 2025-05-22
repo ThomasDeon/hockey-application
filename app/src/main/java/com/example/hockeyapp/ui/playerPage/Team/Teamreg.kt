@@ -167,32 +167,50 @@ fun ExpandableText() {
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                Button(onClick = {
-                    authViewModel.Teamreg(
-                        clubName = clubName.value,
-                        contactPerson = contactPerson.value,
-                        contactCell = contactCell.value,
-                        email = email.value,
-                        umpireName = umpireName.value,
-                        umpireContact = umpireContact.value,
-                        umpireEmail = umpireEmail.value,
-                        techOfficialName = techOfficialName.value,
-                        techOfficialContact = techOfficialContact.value,
-                        techOfficialEmail = techOfficialEmail.value,
-                    ){success, errorMessage ->
-                        if (success) {
-                            Toast.makeText(context, "Team registered successfully",Toast.LENGTH_SHORT).show()
-                        } else {
-                            Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
-                        }
+                    Button(
+                        onClick = {
+                            if (clubName.value.isBlank() ||
+                                contactPerson.value.isBlank() ||
+                                contactCell.value.isBlank() ||
+                                email.value.isBlank() ||
+                                umpireName.value.isBlank() ||
+                                umpireContact.value.isBlank() ||
+                                umpireEmail.value.isBlank() ||
+                                techOfficialName.value.isBlank() ||
+                                techOfficialContact.value.isBlank() ||
+                                techOfficialEmail.value.isBlank() ||
+                                !disclaimerChecked.value
+                            ) {
+                                Toast.makeText(context, "Please fill in all fields and agree to the disclaimer", Toast.LENGTH_SHORT).show()
+                                return@Button
+                            }
+
+                            authViewModel.Teamreg(
+                                clubName = clubName.value,
+                                contactPerson = contactPerson.value,
+                                contactCell = contactCell.value,
+                                email = email.value,
+                                umpireName = umpireName.value,
+                                umpireContact = umpireContact.value,
+                                umpireEmail = umpireEmail.value,
+                                techOfficialName = techOfficialName.value,
+                                techOfficialContact = techOfficialContact.value,
+                                techOfficialEmail = techOfficialEmail.value
+                            ) { success, errorMessage ->
+                                if (success) {
+                                    Toast.makeText(context, "Team registered successfully", Toast.LENGTH_SHORT).show()
+                                } else {
+                                    Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 12.dp)
+                    ) {
+                        Text("Submit")
                     }
-                },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 12.dp)
-                ) {
-                    Text("Submit")
-                }
+
 
                     Spacer(modifier = Modifier.height(16.dp))
 
