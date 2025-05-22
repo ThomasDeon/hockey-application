@@ -128,26 +128,32 @@ class AuthViewModel : ViewModel() {
         techOfficialEmail: String,
         onResult: (Boolean, String) -> Unit
     ) {
+        val teamId = fireStore.collection("Team").document().id // Auto-generate document ID
 
+        val teamModel = TeamregModel(
+            clubName,
+            contactPerson,
+            contactCell,
+            email,
+            umpireName,
+            umpireContact,
+            umpireEmail,
+            techOfficialName,
+            techOfficialContact,
+            techOfficialEmail,
+            teamId
+        )
 
-        auth.createUserWithEmailAndPassword(email, contactCell).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val teamId = task.result?.user?.uid ?: return@addOnCompleteListener
-                val teamModel = TeamregModel(clubName,contactPerson,contactCell,email,umpireName,umpireContact,umpireEmail,techOfficialName,techOfficialContact,techOfficialEmail,teamId)
-
-                fireStore.collection("Team").document(teamId).set(teamModel)
-                    .addOnCompleteListener { dbTask ->
-                        if (dbTask.isSuccessful) {
-                            onResult(true, "Registered Successfully")
-                        } else {
-                            onResult(false, "Failed to Register team")
-                        }
-                    }
-            } else {
-                onResult(false, task.exception?.localizedMessage ?: "Account creation failed")
+        fireStore.collection("Team").document(teamId).set(teamModel)
+            .addOnCompleteListener { dbTask ->
+                if (dbTask.isSuccessful) {
+                    onResult(true, "Registered Successfully")
+                } else {
+                    onResult(false, "Failed to Register team")
+                }
             }
-        }
     }
+
 
     fun Coachreg(
         firstName: String ,
