@@ -3,6 +3,9 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.google.gms.google.services)
+    id("com.google.dagger.hilt.android")
+    id("kotlin-kapt")
+
 }
 
 android {
@@ -42,7 +45,7 @@ android {
 }
 
 dependencies {
-
+    val lifecycle_version = "2.9.0"
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -54,6 +57,7 @@ dependencies {
     implementation(libs.transportation.consumer)
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
+    implementation(libs.androidx.room.common.jvm)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -78,18 +82,17 @@ dependencies {
     implementation ("androidx.compose.ui:ui:1.5.0")
     implementation ("androidx.compose.material:material:1.5.0")
     implementation ("androidx.compose.ui:ui-tooling-preview:1.5.0")
-    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
+
     implementation ("androidx.activity:activity-compose:1.7.2")
     // ViewModel and Lifecycle
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
 
     // Retrofit & Gson
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
     // Jetpack Compose dependencies
     implementation("androidx.compose.runtime:runtime:1.5.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version")
 
 // Kotlin Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
@@ -101,11 +104,22 @@ dependencies {
 
     //room
     val room_version = "2.7.1"
-    annotationProcessor("androidx.room:room-compiler:$room_version")
+    kapt("androidx.room:room-compiler:$room_version")
 
+    kapt("com.google.dagger:hilt-compiler:2.50")
     // optional - Kotlin Extensions and Coroutines support for Room
     implementation("androidx.room:room-ktx:$room_version")
 
     implementation ("com.google.dagger:hilt-android:2.50")
 
+    implementation ("androidx.hilt:hilt-navigation-compose:1.1.0")
+    // Lifecycles only (without ViewModel or LiveData)
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version")
+    // Lifecycle utilities for Compose
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:$lifecycle_version")
+
+
+
 }
+
+

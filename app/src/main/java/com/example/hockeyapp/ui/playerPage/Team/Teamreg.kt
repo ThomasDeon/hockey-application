@@ -36,11 +36,19 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.example.hockeyapp.R
+import com.example.hockeyapp.database.Team
+import com.example.hockeyapp.database.TeamViewModel
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import com.example.hockeyapp.Route
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.livedata.observeAsState
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-    fun TeamRegistrationScreen() {
+    fun TeamRegistrationScreen( navController: NavController,
+                                viewModel: TeamViewModel = hiltViewModel()) {
     val context = LocalContext.current
     val scrollState = rememberScrollState()
         val clubName = remember { mutableStateOf("") }
@@ -61,6 +69,25 @@ import com.example.hockeyapp.R
 
         val showMessage = remember { mutableStateOf("") }
 
+    // Collect teams from ViewModel
+    /* Collect teams from ViewModel using observeAsState which converts live data from collectAll teams to state
+    *live data is primarily used a s a data holder that can be observed for changes , notifies observers when value changes
+     */
+
+    fun clearAllFields() {
+        clubName.value = ""
+        contactPerson.value = ""
+        contactCell.value = ""
+        email.value = ""
+        umpireName.value = ""
+        umpireContact.value = ""
+        umpireEmail.value = ""
+        techOfficialName.value = ""
+        techOfficialContact.value = ""
+        techOfficialEmail.value = ""
+        leagueInfo.value = ""
+        disclaimerChecked.value = false
+    }
 
             Scaffold(
                 topBar = {
@@ -149,7 +176,30 @@ import com.example.hockeyapp.R
                         Toast.makeText(context, "Please enter all fields", Toast.LENGTH_SHORT)
                             .show()
                     } else {
-                        Toast.makeText(context, "Registration Submitted", Toast.LENGTH_SHORT).show()
+                        val newTeam = Team(
+                            clubName = clubName.value,
+                            clubContactPerson = contactPerson.value,
+                            contactPersonCell = contactCell.value,
+                            email = email.value,
+                            nominatedUmpireName = umpireName.value,
+                            nominatedUmpireContact = umpireContact.value,
+                            nominatedUmpireEmail = umpireEmail.value,
+                            nominatedTechnicalOfficial = techOfficialName.value,
+                            technicalOfficialContact = techOfficialContact.value,
+                            technicalOfficialEmail = techOfficialEmail.value,
+                            leagues = leagueInfo.value
+                        )
+                        // Insert with duplicate check
+                        viewModel.insertTeamWithCheck(newTeam) { success, message ->
+                            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+                            if (success) {
+                                clearAllFields()
+                                navController.navigate("team_home") {
+                                    popUpTo("team_registration") { inclusive = true }
+                                    launchSingleTop = true
+                                }
+                            }
+                        }
 
                     }
                 },
@@ -169,7 +219,8 @@ import com.example.hockeyapp.R
         }
 
 
-    @Composable
+
+@Composable
     fun CustomTextField(label: String, state: MutableState<String>, keyboardType: KeyboardType) {
         OutlinedTextField(
             value = state.value,
