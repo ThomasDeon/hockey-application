@@ -2,6 +2,7 @@ package com.example.hockeyapp.ui.playerPage.Team
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -25,8 +26,10 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -34,9 +37,40 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.hockeyapp.R
 
+
+
+@Composable
+fun ExpandableText() {
+    var expanded by remember { mutableStateOf(false) }
+
+    val text = "I will ensure that any/all participants from my club have updated and paid registrations with the NHU. " +
+            "I understand that no member that is not up to date with either their registration nor their payment may participate in an NHU event.\n\n" +
+            "My application to the tournament will only be final once I have sent a team roster for each one of the teams the club entered to the official correspondence (secretary@namibiahockey.org) email of the NHU and received a response.\n\n" +
+            "I understand that my club will be held liable to know and act according to the statutes and tournament rules at all times whilst competing in any NHU tournament."
+
+    Column {
+        Text(
+            text = text,
+            style = MaterialTheme.typography.bodySmall,
+            //if expanded is false only two lines will be shown
+            maxLines = if (expanded) Int.MAX_VALUE else 2,
+            //if the text overflows an ellipsis at the end of the last line
+            overflow = TextOverflow.Ellipsis
+        )
+
+        Text(
+            text = if (expanded) "Show Less" else "Show More",
+            style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.primary),
+            modifier = Modifier
+                .padding(top = 4.dp)
+                .clickable { expanded = !expanded }
+        )
+    }
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -115,20 +149,19 @@ import com.example.hockeyapp.R
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                Row(verticalAlignment = Alignment.Top) {
-                    Checkbox(
-                        checked = disclaimerChecked.value,
-                        onCheckedChange = { disclaimerChecked.value = it }
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = "I will ensure that any/all participants from my club have updated and paid registrations with the NHU. " +
-                                "I understand that no member that is not up to date with either their registration nor their payment may participate in an NHU event.\n\n" +
-                                "My application to the tournament will only be final once I have sent a team roster for each one of the teams the club entered to the official correspondence (secretary@namibiahockey.org) email of the NHU and received a response.\n\n" +
-                                "I understand that my club will be held liable to know and act according to the statutes and tournament rules at all times whilst competing in any NHU tournament.",
-                        style = MaterialTheme.typography.bodySmall
-                    )
-                }
+
+                    Row(verticalAlignment = Alignment.Top) {
+                        Checkbox(
+                            checked = disclaimerChecked.value,
+                            onCheckedChange = { disclaimerChecked.value = it }
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        //ensures that the text does not overflow off the screen
+                        Column(modifier = Modifier.weight(1f))
+                        {
+                            ExpandableText()
+                        }
+                    }
 
                 Spacer(modifier = Modifier.height(16.dp))
 
