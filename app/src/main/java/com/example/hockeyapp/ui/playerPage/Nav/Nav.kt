@@ -110,9 +110,22 @@ fun PlayerNavigation(modifier: Modifier = Modifier) {
             composable(Route.Login.route) {
                 LoginScreen(
                     authViewModel = authViewModel,
-                    onLoginSuccess = {
-                        navController.navigate(Route.PlayerHome.route) {
-                            popUpTo(Route.Login.route) { inclusive = true }
+                    onLoginSuccess = { userType ->
+                        when (userType) {
+                            "admin" -> {
+                                navController.navigate(Route.Home.route) {
+                                    popUpTo(Route.Login.route) { inclusive = true }
+                                }
+                            }
+                            "player" -> {
+                                navController.navigate(Route.PlayerHome.route) {
+                                    popUpTo(Route.Login.route) { inclusive = true }
+                                }
+                            }
+                            else -> {
+                                // default or error case
+                                navController.navigate(Route.PlayerHome.route)
+                            }
                         }
                     },
                     onSignUpClick = {
@@ -120,6 +133,7 @@ fun PlayerNavigation(modifier: Modifier = Modifier) {
                     }
                 )
             }
+
             composable(Route.PlayerRegister.route) { RegisterPlayerScreen(navController) }
             composable(Route.RegisterTeam.route) { RegisterTeam() }
             composable(Route.YouTubeVid.route) { LiveGamesScreen() }
