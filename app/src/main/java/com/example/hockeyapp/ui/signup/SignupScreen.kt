@@ -98,7 +98,7 @@ fun SignUpScreen(
 
         }
         LoginText(
-            text = "PLAYER REGISTRATION",
+            text = "SIGN UP",
             modifier = Modifier
                 .padding(vertical = defaultPadding)
                 .align(alignment = Alignment.Start)
