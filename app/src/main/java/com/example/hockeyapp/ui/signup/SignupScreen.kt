@@ -67,12 +67,9 @@ fun SignUpScreen(
     val (email, onEmailChange) = rememberSaveable {
         mutableStateOf("")
     }
-    val (teamName, onTeamNameChange) = rememberSaveable {
-        mutableStateOf("")
-    }
-    val (dateOfBirth, onDateOfBirth) = rememberSaveable {
-        mutableStateOf("")
-    }
+
+
+
     val (password, onPasswordChange) = rememberSaveable {
         mutableStateOf("")
     }
@@ -85,7 +82,7 @@ fun SignUpScreen(
     }
     val context = LocalContext.current
     var isPasswordSame by remember { mutableStateOf(false) }
-    val isFieldsNotEmpty = firstName.isNotEmpty() && lastName.isNotEmpty() && email.isNotEmpty() && teamName.isNotEmpty() && dateOfBirth.isNotEmpty() && password.isNotEmpty() && confirmPassword.isNotEmpty()
+    val isFieldsNotEmpty = firstName.isNotEmpty() && lastName.isNotEmpty() && email.isNotEmpty()  && password.isNotEmpty() && confirmPassword.isNotEmpty()
 
     Column (
         modifier = Modifier
@@ -126,13 +123,7 @@ fun SignUpScreen(
         )
         Spacer(Modifier.height(itemSpacing))
 
-        LoginTextField(
-                value = dateOfBirth,
-        onValueChange = onDateOfBirth,
-        labelText = "Date OF bith",
-        leadingIcon = Icons.Default.DateRange,
-        modifier = Modifier.fillMaxWidth()
-        )
+
         Spacer(Modifier.height(itemSpacing))
         LoginTextField(
                 value = email,
@@ -143,12 +134,7 @@ fun SignUpScreen(
         )
         Spacer(Modifier.height(itemSpacing))
 
-        LoginTextField(
-                value = teamName,
-        onValueChange = onTeamNameChange,
-        labelText = "Team Name",
-        modifier = Modifier.fillMaxWidth()
-        )
+
         Spacer(Modifier.height(itemSpacing))
         LoginTextField(
                 value = password,
@@ -220,9 +206,7 @@ fun SignUpScreen(
                 authViewModel.UserSignUp(
                     firstName,
                     lastName,
-                    teamName,
                     email,
-                    dateOfBirth,
                     password,
                     confirmPassword
                 ){success, errorMessage ->
