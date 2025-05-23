@@ -183,6 +183,7 @@ class AuthViewModel : ViewModel() {
             firstName = firstName,
             lastName = lastName,
             contact = contact,
+            email = email,
             region = region,
             city = city,
             club = club,
