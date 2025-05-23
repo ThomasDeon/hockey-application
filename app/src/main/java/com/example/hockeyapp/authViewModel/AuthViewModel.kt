@@ -85,9 +85,7 @@ class AuthViewModel : ViewModel() {
     fun UserSignUp(
         firstname: String,
         lastName: String,
-        teamName: String,
         email: String,
-        dateOfBirth: String,
         password: String,
         confirmPassword: String,
         onResult: (Boolean, String) -> Unit
@@ -100,7 +98,7 @@ class AuthViewModel : ViewModel() {
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener {
             if (it.isSuccessful) {
                 val userId = it.result?.user?.uid ?: return@addOnCompleteListener
-                val userModel = UserModel(firstname, lastName, teamName, email, dateOfBirth, userId)
+                val userModel = UserModel(firstname, lastName, email, userId)
 
                 fireStore.collection("User").document(userId).set(userModel)
                     .addOnCompleteListener { dbTask ->
@@ -129,7 +127,7 @@ class AuthViewModel : ViewModel() {
         techOfficialEmail: String,
         onResult: (Boolean, String) -> Unit
     ) {
-        val teamId = fireStore.collection("Team").document().id // Auto-generate document ID
+        val teamId = fireStore.collection("Team").document().id
 
         val teamModel = TeamregModel(
             clubName,
@@ -165,6 +163,7 @@ class AuthViewModel : ViewModel() {
         city: String,
         club: String,
         years: String,
+        qualification: String,
         onResult: (Boolean, String) -> Unit
     ) {
 
@@ -182,6 +181,7 @@ class AuthViewModel : ViewModel() {
             firstName = firstName,
             lastName = lastName,
             contact = contact,
+            email = email,
             region = region,
             city = city,
             club = club,

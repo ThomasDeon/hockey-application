@@ -27,6 +27,8 @@ import com.example.hockeyapp.R
 import androidx.compose.material3.TopAppBar
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.ui.layout.ContentScale
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.hockeyapp.authViewModel.AuthViewModel
 
 
 @Composable
@@ -50,7 +52,7 @@ fun ReusableTextField(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CoachRegistrationScreen() {
+fun CoachRegistrationScreen(authViewModel: AuthViewModel= viewModel()) {
     val context = LocalContext.current
     val scrollState = rememberScrollState()
 
@@ -125,17 +127,35 @@ fun CoachRegistrationScreen() {
 
             Button(
                 onClick = {
-                    if (firstName.isBlank() || lastName.isBlank() || contact.isBlank() || email.isBlank()
-                        || region.isBlank() || city.isBlank() || club.isBlank()
-                        || years.isBlank() || qualification.isBlank()
+                    // Validate fields (optional - example below checks if any are blank)
+                    if (
+                        firstName.isBlank() || lastName.isBlank() || contact.isBlank() ||
+                        email.isBlank() || region.isBlank() || city.isBlank() ||
+                        club.isBlank() || years.isBlank() || qualification.isBlank()
                     ) {
-                        Toast.makeText(context, "Please enter all fields", Toast.LENGTH_SHORT)
-                            .show()
+                        Toast.makeText(context, "Please enter all fields", Toast.LENGTH_SHORT).show()
                     } else {
-                        Toast.makeText(context, "Registration Submitted", Toast.LENGTH_SHORT).show()
-                        // TODO: Handle form submission logic here
+                        authViewModel.Coachreg( // This function must exist in your ViewModel
+                            firstName = firstName,
+                            lastName = lastName,
+                            contact = contact,
+                            email = email,
+                            region = region,
+                            city = city,
+                            club = club,
+                            years = years,
+                            qualification = qualification
+                        ) { success, errorMessage ->
+                            if (success) {
+                                Toast.makeText(context, "Coach registered successfully", Toast.LENGTH_SHORT).show()
+                            } else {
+                                Toast.makeText(context, errorMessage ?: "Registration failed", Toast.LENGTH_SHORT).show()
+                            }
+                        }
                     }
+
                 },
+
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 12.dp)

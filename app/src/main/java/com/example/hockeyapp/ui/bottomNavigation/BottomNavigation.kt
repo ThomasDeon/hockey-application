@@ -53,9 +53,10 @@ data class BottomNavItem(
 @Composable
 fun MainScreen() {
     val navController = rememberNavController()
-    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed) // ✅ from material3
     val scope = rememberCoroutineScope()
     val authViewModel: AuthViewModel = viewModel()
+
 
     val bottomNavItems = listOf(
         BottomNavItem("Home", Icons.Default.Home, Route.Home.route),
@@ -72,8 +73,8 @@ fun MainScreen() {
             ModalDrawerSheet(
                 modifier = Modifier
                     .width(280.dp),
-                drawerContainerColor = Color(0xFFF3F3F3),
-                drawerShape = RoundedCornerShape(topEnd = 20.dp, bottomEnd = 20.dp)
+                drawerContainerColor = Color(0xFFF3F3F3), // Optional light background
+                drawerShape = RoundedCornerShape(topEnd = 20.dp, bottomEnd = 20.dp) // ✅ Rounded corners
             ) {
 
                 DrawerBody(
@@ -154,7 +155,7 @@ fun MainScreen() {
                 ) {
                     composable(Route.Home.route) { HomeScreen() }
                     composable(Route.News.route) { NewsPage() }
-                    composable(Route.Setting.route) { AnnouncementPage(authViewModel) }
+                    composable(Route.Setting.route) { AnnouncementPage(authViewModel = authViewModel) }
                     composable(Route.Profile.route) {
                         AdminScreen(
                             authViewModel = authViewModel,

@@ -49,8 +49,8 @@ data class NavItem( val label: String,
 
 @Composable
 fun PlayerNavigation(modifier: Modifier= Modifier){
-
     val authViewModel: AuthViewModel = viewModel()
+
     val navController = rememberNavController()
     val eventList = listOf(
         Event("Team Meeting", "May 20, 2025", "Discuss the upcoming match."),
@@ -103,7 +103,7 @@ fun PlayerNavigation(modifier: Modifier= Modifier){
             composable(Route.News.route) { NewsPage() }
             //composable(Route.Profile.route) { AdminScreen(authViewModel = au) }
             composable(Route.Event.route){EventPage(events = eventList)}
-           // composable(Route.Setting.route) { AnnouncementPage(authViewModel) }
+        //    composable(Route.Setting.route) { AnnouncementPage(authViewModel) }
             composable(Route.PlayerRegister.route) { RegisterPlayerScreen(navController) }
             composable(Route.RegisterTeam.route) { RegisterTeam() }
             composable(Route.YouTubeVid.route) { LiveGamesScreen() }

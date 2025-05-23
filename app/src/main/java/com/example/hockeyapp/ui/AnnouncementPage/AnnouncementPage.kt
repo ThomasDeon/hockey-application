@@ -109,7 +109,7 @@ fun AnnouncementPage(authViewModel: AuthViewModel) {
                 }
 
             },
-            modifier = Modifier.align(Alignment.Center as Alignment.Horizontal)
+            modifier = Modifier.align(Alignment.CenterHorizontally)
         ) {
             Text("Submit")
         }
