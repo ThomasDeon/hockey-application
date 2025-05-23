@@ -129,7 +129,7 @@ class AuthViewModel : ViewModel() {
         techOfficialEmail: String,
         onResult: (Boolean, String) -> Unit
     ) {
-        val teamId = fireStore.collection("Team").document().id // Auto-generate document ID
+        val teamId = fireStore.collection("Team").document().id
 
         val teamModel = TeamregModel(
             clubName,
@@ -165,6 +165,7 @@ class AuthViewModel : ViewModel() {
         city: String,
         club: String,
         years: String,
+        qualification: String,
         onResult: (Boolean, String) -> Unit
     ) {
 
