@@ -2,6 +2,7 @@ package com.example.hockeyapp.ui.login
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -68,7 +69,8 @@ fun LoginScreen(onLoginSuccess:(String) -> Unit, onSignUpClick: () -> Unit, auth
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(defaultPadding),
+            .padding(defaultPadding)
+        .background(Color.White),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -85,7 +87,7 @@ fun LoginScreen(onLoginSuccess:(String) -> Unit, onSignUpClick: () -> Unit, auth
             text = "LOGIN",
             modifier = Modifier
                 .padding(vertical = defaultPadding)
-                .align(alignment = Alignment.Start)
+
 
         )
 
@@ -182,7 +184,7 @@ fun LoginScreen(onLoginSuccess:(String) -> Unit, onSignUpClick: () -> Unit, auth
             onSignUpClick = onSignUpClick,
             modifier = Modifier
                 .fillMaxSize()
-                .wrapContentSize(align = Alignment.BottomCenter)
+
 
         )
     }

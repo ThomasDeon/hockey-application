@@ -74,6 +74,7 @@ fun ExpandableText() {
     }
 }
 
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
     fun TeamRegistrationScreen(authViewModel: AuthViewModel= viewModel()) {
@@ -100,6 +101,7 @@ fun ExpandableText() {
 
             Scaffold(
                 topBar = {
+                    //this api is experimental and is likely to change in future
                     TopAppBar(
                         title = {
                             Text(

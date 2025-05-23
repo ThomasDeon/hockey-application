@@ -18,6 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -25,8 +26,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.hockeyapp.Route
+import com.example.hockeyapp.authViewModel.AuthViewModel
 import com.example.hockeyapp.ui.RegisterTeam.RegisterTeam
 import com.example.hockeyapp.ui.announcement.AnnouncementPage
+import com.example.hockeyapp.ui.login.LoginScreen
 import com.example.hockeyapp.ui.newsPages.NewsPage
 import com.example.hockeyapp.ui.playerPage.Coach.CoachRegistrationScreen
 import com.example.hockeyapp.ui.playerPage.LiveScores.LiveGamesScreen
@@ -36,18 +39,19 @@ import com.example.hockeyapp.ui.playerPage.PlayerEvent.Event
 import com.example.hockeyapp.ui.playerPage.PlayerEvent.EventPage
 import com.example.hockeyapp.ui.playerPage.PlayerHomepage
 import com.example.hockeyapp.ui.playerPage.Team.TeamRegistrationScreen
+import com.example.hockeyapp.ui.playerPage.UserProfile.UserProfileScreen
 import com.example.hockeyapp.ui.playerPage.health.HealthFitness
 import com.example.hockeyapp.ui.playerPage.health.WebArticleScreen
 import com.example.hockeyapp.ui.playerPage.registration.RegisterPlayerScreen
 
 
 data class NavItem( val label: String,
-                    val icon: androidx.compose.ui.graphics.vector.ImageVector,
+                    val icon: ImageVector,
                     val route: String)
 
 @Composable
 fun PlayerNavigation(modifier: Modifier= Modifier){
-
+    val authViewModel = remember { AuthViewModel() }
     val navController = rememberNavController()
     val eventList = listOf(
         Event("Team Meeting", "May 20, 2025", "Discuss the upcoming match."),
@@ -58,7 +62,7 @@ fun PlayerNavigation(modifier: Modifier= Modifier){
         NavItem("Home", icon = Icons.Default.Home, route = Route.PlayerHome.route),
         NavItem("News", icon = Icons.Default.Info, route = Route.News.route),
         NavItem("Events", icon = Icons.Default.CalendarToday, route =Route.Event.route),
-        NavItem("Profile", Icons.Default.Person, route = Route.Profile.route),
+        NavItem("Profile", Icons.Default.Person, route = Route.UserProfile.route),
 
     )
     var selectedRoute by remember { mutableStateOf(Route.PlayerHome.route) }
@@ -100,12 +104,13 @@ fun PlayerNavigation(modifier: Modifier= Modifier){
             composable(Route.News.route) { NewsPage() }
             //composable(Route.Profile.route) { AdminScreen(authViewModel = au) }
             composable(Route.Event.route){EventPage(events = eventList)}
-            composable(Route.Setting.route) { AnnouncementPage() }
+
             composable(Route.PlayerRegister.route) { RegisterPlayerScreen(navController) }
             composable(Route.RegisterTeam.route) { RegisterTeam() }
             composable(Route.YouTubeVid.route) { LiveGamesScreen() }
             composable(Route.Coach.route) { CoachRegistrationScreen() }
             composable(Route.Club.route) { ClubPage() }
+            composable(Route.UserProfile.route) { UserProfileScreen(navController,authViewModel = authViewModel ) }
             composable(Route.Player.route) { PlayerRegistrationScreen(navController) }
             composable(Route.Team.route) { TeamRegistrationScreen() }
             composable(

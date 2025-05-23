@@ -153,7 +153,7 @@ fun MainScreen() {
                 ) {
                     composable(Route.Home.route) { HomeScreen() }
                     composable(Route.News.route) { NewsPage() }
-                    composable(Route.Setting.route) { AnnouncementPage() }
+                    composable(Route.Setting.route) { AnnouncementPage(authViewModel = authViewModel) }
                     composable(Route.Profile.route) {
                         AdminScreen(
                             authViewModel = authViewModel,
