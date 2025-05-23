@@ -127,7 +127,7 @@ fun CoachRegistrationScreen(authViewModel: AuthViewModel= viewModel()) {
 
             Button(
                 onClick = {
-                    // Validate fields (optional - example below checks if any are blank)
+                    // Validate fields (optional -  below checks if any are blank)
                     if (
                         firstName.isBlank() || lastName.isBlank() || contact.isBlank() ||
                         email.isBlank() || region.isBlank() || city.isBlank() ||

@@ -103,6 +103,9 @@ fun AnnouncementPage(authViewModel: AuthViewModel) {
                 ) { success, errorMessage ->
                     if (success) {
                         Toast.makeText(context, "Announcement created successfully", Toast.LENGTH_SHORT).show()
+                        onTitleChange("")
+                        onDescriptionChange("")
+                        onDateChange("")
                     } else {
                         Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
                     }

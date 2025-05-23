@@ -109,7 +109,7 @@ fun PlayerNavigation(modifier: Modifier = Modifier) {
             composable(Route.PlayerHome.route) { PlayerHomepage(navController) }
             composable(Route.healthFitness.route) { HealthFitness() }
             composable(Route.News.route) { NewsPage() }
-            composable(Route.Event.route) { EventPage(events = eventList) }
+            composable(Route.Event.route) { EventPage() }
             composable(Route.Login.route) {
                 LoginScreen(
                     authViewModel = authViewModel,

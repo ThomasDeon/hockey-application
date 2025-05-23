@@ -6,13 +6,21 @@ import com.example.hockeyapp.model.AnnouncementModel
 import com.example.hockeyapp.model.CoachregModel
 import com.example.hockeyapp.model.TeamregModel
 import com.example.hockeyapp.model.UserModel
+import com.example.hockeyapp.ui.playerPage.PlayerEvent.Event
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.firestore
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 class AuthViewModel : ViewModel() {
     private val auth = Firebase.auth
     private val fireStore = Firebase.firestore
+
+
+    private val _events = MutableStateFlow<List<Event>>(emptyList())
+    val events: StateFlow<List<Event>> = _events
+
 
     fun login(email: String, password: String, onResult: (Boolean, String?, String?) -> Unit) {
         auth.signInWithEmailAndPassword(email, password)
@@ -266,5 +274,29 @@ class AuthViewModel : ViewModel() {
             }
     }
 
+    fun AnnouncementModel.toEvent(): Event {
+        return Event(
+            title = this.title,
+            date = this.date,
+            description = this.description
+        )
+    }
+
+    fun fetchAnnouncements() {
+        fireStore.collection("Announcements")
+            .get()
+            .addOnSuccessListener { result ->
+                val list = result.mapNotNull { it.toObject(AnnouncementModel::class.java)?.toEvent() }
+                _events.value = list
+            }
+            .addOnFailureListener {
+                _events.value = emptyList()
+            }
+    }
+
+    init {
+        fetchAnnouncements() // Load events on ViewModel creation
+    }
 }
+
 
