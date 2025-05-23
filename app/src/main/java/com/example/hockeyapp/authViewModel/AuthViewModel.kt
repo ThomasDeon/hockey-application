@@ -1,6 +1,7 @@
 package com.example.hockeyapp.authViewModel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.hockeyapp.model.AdminModel
 import com.example.hockeyapp.model.AnnouncementModel
 import com.example.hockeyapp.model.CoachregModel
@@ -9,6 +10,7 @@ import com.example.hockeyapp.model.UserModel
 import com.example.hockeyapp.ui.playerPage.PlayerEvent.Event
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,11 +18,12 @@ import kotlinx.coroutines.flow.StateFlow
 class AuthViewModel : ViewModel() {
     private val auth = Firebase.auth
     private val fireStore = Firebase.firestore
-
-
+    private val _teams = MutableStateFlow<List<TeamregModel>>(emptyList())
     private val _events = MutableStateFlow<List<Event>>(emptyList())
-    val events: StateFlow<List<Event>> = _events
 
+
+    val events: StateFlow<List<Event>> = _events
+    val teams: StateFlow<List<TeamregModel>> = _teams
 
     fun login(email: String, password: String, onResult: (Boolean, String?, String?) -> Unit) {
         auth.signInWithEmailAndPassword(email, password)
@@ -296,6 +299,17 @@ class AuthViewModel : ViewModel() {
 
     init {
         fetchAnnouncements() // Load events on ViewModel creation
+    }
+
+    fun fetchTeams() {
+        fireStore.collection("Team").get()
+            .addOnSuccessListener { result ->
+                val teamList = result.documents.mapNotNull { it.toObject(TeamregModel::class.java) }
+                _teams.value = teamList
+            }
+            .addOnFailureListener {
+                _teams.value = emptyList()
+            }
     }
 }
 

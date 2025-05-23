@@ -1,5 +1,6 @@
 package com.example.hockeyapp.ui.bottomNavigation
 
+import ViewTeamScreen
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -11,6 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.People
+import androidx.compose.material.icons.filled.PeopleOutline
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -62,7 +64,8 @@ fun MainScreen() {
         BottomNavItem("Home", Icons.Default.Home, Route.Home.route),
         BottomNavItem("News", Icons.Default.PlayArrow, Route.News.route),
         BottomNavItem("Announcement", Icons.Default.DateRange, Route.Setting.route),
-        BottomNavItem("Register", Icons.Default.People, Route.Profile.route)
+        BottomNavItem("Register", Icons.Default.People, Route.Profile.route),
+        BottomNavItem("View Teams",Icons.Default.PeopleOutline, Route.ViewTeams.route)
     )
 
     var selectedBottomItem by remember { mutableStateOf(Route.Home.route) }
@@ -165,6 +168,7 @@ fun MainScreen() {
                         )
                     }
                     composable(Route.healthFitness.route) { HealthFitness() }
+                    composable(Route.ViewTeams.route) { ViewTeamScreen() }
                     composable(
                         route = "webview_screen/{url}",
                         arguments = listOf(navArgument("url") { type = NavType.StringType })
@@ -172,6 +176,7 @@ fun MainScreen() {
                         val url = backStackEntry.arguments?.getString("url") ?: ""
                         WebArticleScreen(url = url)
                     }
+
                 }
             }
         }
