@@ -19,12 +19,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.hockeyapp.Route
+import com.example.hockeyapp.authViewModel.AuthViewModel
 import com.example.hockeyapp.ui.RegisterTeam.RegisterTeam
 import com.example.hockeyapp.ui.announcement.AnnouncementPage
 import com.example.hockeyapp.ui.newsPages.NewsPage
@@ -48,6 +50,7 @@ data class NavItem( val label: String,
 @Composable
 fun PlayerNavigation(modifier: Modifier= Modifier){
 
+    val authViewModel: AuthViewModel = viewModel()
     val navController = rememberNavController()
     val eventList = listOf(
         Event("Team Meeting", "May 20, 2025", "Discuss the upcoming match."),
@@ -100,7 +103,7 @@ fun PlayerNavigation(modifier: Modifier= Modifier){
             composable(Route.News.route) { NewsPage() }
             //composable(Route.Profile.route) { AdminScreen(authViewModel = au) }
             composable(Route.Event.route){EventPage(events = eventList)}
-            composable(Route.Setting.route) { AnnouncementPage() }
+           // composable(Route.Setting.route) { AnnouncementPage(authViewModel) }
             composable(Route.PlayerRegister.route) { RegisterPlayerScreen(navController) }
             composable(Route.RegisterTeam.route) { RegisterTeam() }
             composable(Route.YouTubeVid.route) { LiveGamesScreen() }

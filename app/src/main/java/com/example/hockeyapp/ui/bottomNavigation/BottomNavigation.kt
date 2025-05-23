@@ -22,6 +22,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -52,9 +53,9 @@ data class BottomNavItem(
 @Composable
 fun MainScreen() {
     val navController = rememberNavController()
-    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed) // ✅ from material3
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
-    val authViewModel = remember { AuthViewModel() }
+    val authViewModel: AuthViewModel = viewModel()
 
     val bottomNavItems = listOf(
         BottomNavItem("Home", Icons.Default.Home, Route.Home.route),
@@ -71,8 +72,8 @@ fun MainScreen() {
             ModalDrawerSheet(
                 modifier = Modifier
                     .width(280.dp),
-                drawerContainerColor = Color(0xFFF3F3F3), // Optional light background
-                drawerShape = RoundedCornerShape(topEnd = 20.dp, bottomEnd = 20.dp) // ✅ Rounded corners
+                drawerContainerColor = Color(0xFFF3F3F3),
+                drawerShape = RoundedCornerShape(topEnd = 20.dp, bottomEnd = 20.dp)
             ) {
 
                 DrawerBody(
@@ -153,7 +154,7 @@ fun MainScreen() {
                 ) {
                     composable(Route.Home.route) { HomeScreen() }
                     composable(Route.News.route) { NewsPage() }
-                    composable(Route.Setting.route) { AnnouncementPage() }
+                    composable(Route.Setting.route) { AnnouncementPage(authViewModel) }
                     composable(Route.Profile.route) {
                         AdminScreen(
                             authViewModel = authViewModel,
