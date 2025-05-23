@@ -148,6 +148,16 @@ fun CoachRegistrationScreen(authViewModel: AuthViewModel= viewModel()) {
                         ) { success, errorMessage ->
                             if (success) {
                                 Toast.makeText(context, "Coach registered successfully", Toast.LENGTH_SHORT).show()
+                                //  Clear form fields
+                                firstName = ""
+                                lastName = ""
+                                contact = ""
+                                email = ""
+                                region = ""
+                                city = ""
+                                club = ""
+                                years = ""
+                                qualification=""
                             } else {
                                 Toast.makeText(context, errorMessage ?: "Registration failed", Toast.LENGTH_SHORT).show()
                             }

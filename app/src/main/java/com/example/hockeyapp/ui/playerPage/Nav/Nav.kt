@@ -43,6 +43,9 @@ import com.example.hockeyapp.ui.playerPage.UserProfile.UserProfileScreen
 import com.example.hockeyapp.ui.playerPage.health.HealthFitness
 import com.example.hockeyapp.ui.playerPage.health.WebArticleScreen
 import com.example.hockeyapp.ui.playerPage.registration.RegisterPlayerScreen
+import com.example.hockeyapp.ui.signup.PolicyScreen
+import com.example.hockeyapp.ui.signup.PrivacyScreen
+import com.example.hockeyapp.ui.signup.SignUpScreen
 
 
 data class NavItem( val label: String,
@@ -73,7 +76,7 @@ fun PlayerNavigation(modifier: Modifier = Modifier) {
 
     Scaffold(
         bottomBar = {
-            if (currentRoute != Route.Login.route) {
+            if (currentRoute != Route.Login.route && currentRoute != Route.SignUp.route) {
                 NavigationBar {
                     navItemList.forEach { item ->
                         IconButton(
@@ -142,6 +145,44 @@ fun PlayerNavigation(modifier: Modifier = Modifier) {
             composable(Route.UserProfile.route) { UserProfileScreen(navController, authViewModel = authViewModel) }
             composable(Route.Player.route) { PlayerRegistrationScreen(navController) }
             composable(Route.Team.route) { TeamRegistrationScreen() }
+            composable(route = Route.SignUp.route) {
+                SignUpScreen(
+                    onSignUpClick = {
+                        navController.navigate(
+                            Route.Login.route
+                        )
+                    },
+                    onLoginClick = {
+                        navController.navigate(Route.Login.route)
+
+                    },
+                    onPolicyClicked = {
+                        navController.navigate(
+                            Route.Policy.route
+                        )
+                    },
+                    onPrivacyClicked = {
+                        navController.navigate(
+                            Route.Privacy.route
+                        )
+                    },
+                    onSignUpSuccess = {
+                        navController.navigate(Route.Login.route)
+                    }
+
+                )
+            }
+            composable(route = Route.Privacy.route) {
+                PrivacyScreen {
+                    navController.navigateUp()
+                }
+            }
+            composable(route = Route.Policy.route) {
+                PolicyScreen {
+                    navController.navigateUp()
+                }
+            }
+
             composable(
                 route = "webview_screen/{url}",
                 arguments = listOf(navArgument("url") { type = NavType.StringType })

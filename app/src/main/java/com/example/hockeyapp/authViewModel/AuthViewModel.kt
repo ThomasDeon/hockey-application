@@ -131,27 +131,49 @@ class AuthViewModel : ViewModel() {
     ) {
         val teamId = fireStore.collection("Team").document().id
 
-        val teamModel = TeamregModel(
-            clubName,
-            contactPerson,
-            contactCell,
-            email,
-            umpireName,
-            umpireContact,
-            umpireEmail,
-            techOfficialName,
-            techOfficialContact,
-            techOfficialEmail,
-            teamId
-        )
+        // Basic validation
+        if (clubName.isBlank() || contactPerson.isBlank() || contactCell.isBlank() || email.isBlank()
+            || umpireName.isBlank() || umpireContact.isBlank() || umpireEmail.isBlank()
+            || techOfficialName.isBlank() || techOfficialContact.isBlank() || techOfficialEmail.isBlank()
+        ) {
+            onResult(false, "Please fill in all fields")
+            return
+        }
 
-        fireStore.collection("Team").document(teamId).set(teamModel)
-            .addOnCompleteListener { dbTask ->
-                if (dbTask.isSuccessful) {
-                    onResult(true, "Registered Successfully")
+        // Check for duplicate email
+        fireStore.collection("Team")
+            .whereEqualTo("email", email)
+            .get()
+            .addOnSuccessListener { documents ->
+                if (!documents.isEmpty) {
+                    onResult(false, "A team with this email already exists.")
                 } else {
-                    onResult(false, "Failed to Register team")
+                    val teamModel = TeamregModel(
+                        teamId = teamId,
+                        clubName = clubName,
+                        contactPerson = contactPerson,
+                        contactCell = contactCell,
+                        email = email,
+                        umpireName = umpireName,
+                        umpireContact = umpireContact,
+                        umpireEmail = umpireEmail,
+                        techOfficialName = techOfficialName,
+                        techOfficialContact = techOfficialContact,
+                        techOfficialEmail = techOfficialEmail
+                    )
+
+                    fireStore.collection("Team").document(teamId).set(teamModel)
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                onResult(true, "Team registered successfully")
+                            } else {
+                                onResult(false, "Failed to register team")
+                            }
+                        }
                 }
+            }
+            .addOnFailureListener { exception ->
+                onResult(false, exception.localizedMessage ?: "Error checking existing team")
             }
     }
 
@@ -168,39 +190,55 @@ class AuthViewModel : ViewModel() {
         qualification: String,
         onResult: (Boolean, String) -> Unit
     ) {
-
-        val coachId = fireStore.collection("Team").document().id
+        val coachId = fireStore.collection("Coach").document().id
 
         // Validate inputs
         if (firstName.isBlank() || lastName.isBlank() || contact.isBlank() || email.isBlank()
-            || region.isBlank() || city.isBlank() || club.isBlank() || years.isBlank()) {
+            || region.isBlank() || city.isBlank() || club.isBlank() || years.isBlank()
+        ) {
             onResult(false, "Please fill in all fields")
             return
         }
 
-        // Create coach model
-        val coachModel = CoachregModel(
-            firstName = firstName,
-            lastName = lastName,
-            contact = contact,
-            email = email,
-            region = region,
-            city = city,
-            club = club,
-            years = years,
-            coachId = coachId
-        )
-
-        // Save to Firestore (no Auth)
-        fireStore.collection("Coach").document(coachId).set(coachModel)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    onResult(true, "Coach registered successfully")
+        // Check if email already exists
+        fireStore.collection("Coach")
+            .whereEqualTo("email", email)
+            .get()
+            .addOnSuccessListener { documents ->
+                if (!documents.isEmpty) {
+                    // Coach with this email already exists
+                    onResult(false, "A coach with this email already exists.")
                 } else {
-                    onResult(false, "Failed to register coach")
+                    // Create coach model
+                    val coachModel = CoachregModel(
+                        firstName = firstName,
+                        lastName = lastName,
+                        contact = contact,
+                        email = email,
+                        region = region,
+                        city = city,
+                        club = club,
+                        years = years,
+                        coachId = coachId
+                    )
+
+                    // Save to Firestore
+                    fireStore.collection("Coach").document(coachId).set(coachModel)
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                onResult(true, "Coach registered successfully")
+                            } else {
+                                onResult(false, "Failed to register coach")
+                            }
+                        }
                 }
             }
+            .addOnFailureListener { exception ->
+                onResult(false, exception.localizedMessage ?: "Error checking existing coach")
+            }
     }
+
+
 
     fun submitAnnouncement(
         title: String,
