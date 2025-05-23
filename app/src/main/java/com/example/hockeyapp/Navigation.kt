@@ -15,7 +15,9 @@ import com.example.hockeyapp.ui.signup.PolicyScreen
 import com.example.hockeyapp.ui.signup.PrivacyScreen
 import com.example.hockeyapp.ui.signup.SignUpScreen
 
-
+/*defines all the routes your app can navigate to, and guarantees that the only defined screens
+*are valid
+* */
 sealed class Route(val route: String) {
     object Login : Route("Login")
     object SignUp : Route("SignUp")
@@ -35,6 +37,7 @@ sealed class Route(val route: String) {
     object Team : Route ("team")
     object Player : Route("player")
     object Club : Route("club")
+    object UserProfile : Route("userProfile")
 }
 
 
