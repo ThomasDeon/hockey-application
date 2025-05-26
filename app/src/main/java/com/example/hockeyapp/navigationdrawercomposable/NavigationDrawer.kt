@@ -20,24 +20,9 @@ import androidx.compose.ui.unit.sp
 import com.example.hockeyapp.ui.defaultPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-
-
-@Composable
-fun DrawerHeader(modifier: Modifier = Modifier) {
-
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = defaultPadding, vertical = 32.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = "Header",
-            fontSize = 24.sp,
-            maxLines = 1
-        )
-    }
-}
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
+import com.example.hockeyapp.ui.bottomNavigation.NavIcon
 
 @Composable
 fun DrawerBody (
@@ -56,9 +41,16 @@ fun DrawerBody (
                     }
                     .padding(16.dp)
             ) {
-                Icon( imageVector = item.icon,
-                    contentDescription = item.contentDescription
-                )
+                when (val icon = item.icon) {
+                    is NavIcon.VectorIcon -> Icon(
+                        imageVector = icon.icon,
+                        contentDescription = item.contentDescription
+                    )
+                    is NavIcon.DrawableIcon -> Icon(
+                        painter = painterResource(id = icon.resId),
+                        contentDescription = item.contentDescription
+                    )
+                }
                 Spacer(Modifier.height(defaultPadding))
 
                 Text(
