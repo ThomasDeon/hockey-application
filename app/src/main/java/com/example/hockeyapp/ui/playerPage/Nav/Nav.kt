@@ -27,6 +27,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.hockeyapp.Route
 import com.example.hockeyapp.authViewModel.AuthViewModel
+import com.example.hockeyapp.ui.HomeScreen
 import com.example.hockeyapp.ui.RegisterTeam.RegisterTeam
 import com.example.hockeyapp.ui.announcement.AnnouncementPage
 import com.example.hockeyapp.ui.login.LoginScreen
@@ -133,7 +134,7 @@ fun PlayerNavigation(modifier: Modifier = Modifier) {
                     }
                 )
             }
-
+            composable(Route.Home.route) { HomeScreen() }
             composable(Route.PlayerRegister.route) { RegisterPlayerScreen(navController) }
             composable(Route.RegisterTeam.route) { RegisterTeam() }
             composable(Route.YouTubeVid.route) { LiveGamesScreen() }
