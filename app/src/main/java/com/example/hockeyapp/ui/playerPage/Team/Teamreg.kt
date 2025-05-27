@@ -149,7 +149,6 @@ fun ExpandableText() {
                 CustomTextField("Technical Official Contact", techOfficialContact, KeyboardType.Phone)
                 CustomTextField("Technical Official Email", techOfficialEmail, KeyboardType.Email)
 
-                CustomTextField("Please indicate the Leagues your club is in", leagueInfo, KeyboardType.Text)
 
                 Spacer(modifier = Modifier.height(16.dp))
 
@@ -201,6 +200,18 @@ fun ExpandableText() {
                             ) { success, errorMessage ->
                                 if (success) {
                                     Toast.makeText(context, "Team registered successfully", Toast.LENGTH_SHORT).show()
+                                    // Clear form fields
+                                    clubName.value = ""
+                                    contactPerson.value = ""
+                                    contactCell.value = ""
+                                    email.value = ""
+                                    umpireName.value = ""
+                                    umpireContact.value = ""
+                                    umpireEmail.value = ""
+                                    techOfficialName.value = ""
+                                    techOfficialContact.value = ""
+                                    techOfficialEmail.value = ""
+                                    disclaimerChecked.value = false
                                 } else {
                                     Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
                                 }

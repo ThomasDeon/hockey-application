@@ -103,13 +103,14 @@ fun AnnouncementPage(authViewModel: AuthViewModel) {
                 ) { success, errorMessage ->
                     if (success) {
                         Toast.makeText(context, "Announcement created successfully", Toast.LENGTH_SHORT).show()
+
                     } else {
                         Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
                     }
                 }
 
             },
-            modifier = Modifier.align(Alignment.Center as Alignment.Horizontal)
+            modifier = Modifier.align(Alignment.CenterHorizontally)
         ) {
             Text("Submit")
         }

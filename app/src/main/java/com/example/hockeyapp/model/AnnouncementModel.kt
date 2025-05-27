@@ -7,6 +7,6 @@ data class AnnouncementModel(
     val title: String = "",
     val description: String = "",
     val date: String = "",
-val time: String = "",
-  val  announcementId: String = ""
+    val time: String = "",
+    val  announcementId: String = ""
 )

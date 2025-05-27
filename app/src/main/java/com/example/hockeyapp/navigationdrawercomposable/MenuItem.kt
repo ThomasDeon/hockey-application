@@ -1,10 +1,14 @@
 package com.example.hockeyapp.navigationdrawercomposable
 
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 
-data class MenuItem (
+
+import com.example.hockeyapp.ui.bottomNavigation.NavIcon
+
+data class MenuItem(
     val id: String,
     val title: String,
     val contentDescription: String,
-    val icon: ImageVector
+    val icon: NavIcon
 )

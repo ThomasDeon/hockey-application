@@ -127,7 +127,7 @@ fun CoachRegistrationScreen(authViewModel: AuthViewModel= viewModel()) {
 
             Button(
                 onClick = {
-                    // Validate fields (optional - example below checks if any are blank)
+                    // Validate fields (optional -  below checks if any are blank)
                     if (
                         firstName.isBlank() || lastName.isBlank() || contact.isBlank() ||
                         email.isBlank() || region.isBlank() || city.isBlank() ||
@@ -148,6 +148,16 @@ fun CoachRegistrationScreen(authViewModel: AuthViewModel= viewModel()) {
                         ) { success, errorMessage ->
                             if (success) {
                                 Toast.makeText(context, "Coach registered successfully", Toast.LENGTH_SHORT).show()
+                                //  Clear form fields
+                                firstName = ""
+                                lastName = ""
+                                contact = ""
+                                email = ""
+                                region = ""
+                                city = ""
+                                club = ""
+                                years = ""
+                                qualification=""
                             } else {
                                 Toast.makeText(context, errorMessage ?: "Registration failed", Toast.LENGTH_SHORT).show()
                             }
