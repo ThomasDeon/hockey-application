@@ -83,4 +83,4 @@ Contributions are welcome! If you would like to help develop this project, pleas
 #### License
 This project is licensed under the MIT License - see the LICENSE.md file for details.
 #### Contact
-For inquiries, please contact the project team at contact@hockeywebapp.example.com.
+For inquiries, please contact the project team at thomasshikalepo@gmail.com.
